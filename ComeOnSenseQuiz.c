@@ -15,6 +15,7 @@
 
 /* 함수 선언 */
 void init();
+void setcolor(int, int);
 void titleDraw();
 void gotoxy(int, int);
 int menuDraw();
@@ -30,11 +31,17 @@ int main() {
 }
 
 void init() {
-    system("mode con cols=56 lines=20 | title ComeOn Sense Quiz");
+    system("mode con cols=106 lines=30 | title ComeOn Sense Quiz");
+}
+void setcolor(int text, int back)
+{
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text | (back << 4));
 }
 void titleDraw() {
-    printf("\n\n\n\n");
-    printf("                    ComeOn Sense Quiz\n");
+    printf("\n\n\n\n\n\n");
+    setcolor(3, 0);
+    printf("                                          ComeOn Sense Quiz\n");
+    setcolor(7, 0);
 }
 void gotoxy(int x, int y) {
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -44,8 +51,8 @@ void gotoxy(int x, int y) {
     SetConsoleCursorPosition(consoleHandle, pos);
 }
 int menuDraw() {
-    int x = 24;
-    int y = 12;
+    int x = 42;
+    int y = 20;
     gotoxy(x - 2, y);
     printf("> ID 입력");
     gotoxy(x, y+1);
@@ -56,7 +63,7 @@ int menuDraw() {
         int n = keyControl();
         switch (n) {
         case UP: {
-            if (y > 12) {
+            if (y > 20) {
                 gotoxy(x - 2, y);
                 printf(" ");
                 gotoxy(x - 2, --y);
@@ -65,7 +72,7 @@ int menuDraw() {
             break;
         }
         case DOWN: {
-            if (y < 14) {
+            if (y < 22) {
                 gotoxy(x - 2, y);
                 printf(" ");
                 gotoxy(x - 2, ++y);
@@ -74,7 +81,7 @@ int menuDraw() {
             break;
         }
         case SUBMIT: {
-            return y - 12;
+            return y - 20;
         }
         }
     }
