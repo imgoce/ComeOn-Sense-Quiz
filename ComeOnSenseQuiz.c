@@ -317,3 +317,89 @@ int isUsernameExists(const char* username) {
     }
     return 0; // 아이디가 존재하지 않음
 }*/
+
+/* 파일에 저장된 문제를 랜덤으로 출력 후 엔터를 누르면 다음 문제로 넘어감
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#define MAX_LINE_LENGTH 100
+
+void shuffleArray(int arr[], int n) {
+    // Fisher-Yates shuffle algorithm
+    for (int i = n - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
+
+int main() {
+    FILE* file;
+    char line[MAX_LINE_LENGTH];
+    int* questionOrder;
+    int numQuestions = 0;
+
+    // Count the number of questions in the file
+    file = fopen("questions.txt", "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    while (fgets(line, MAX_LINE_LENGTH, file) != NULL) {
+        numQuestions++;
+    }
+
+    fclose(file);
+
+    // Create an array to store the order in which questions will be asked
+    questionOrder = (int*)malloc(numQuestions * sizeof(int));
+    if (questionOrder == NULL) {
+        perror("Error allocating memory");
+        return 1;
+    }
+
+    for (int i = 0; i < numQuestions; i++) {
+        questionOrder[i] = i;
+    }
+
+    // Shuffle the array to randomize the order of questions
+    srand((unsigned int)time(NULL));
+    shuffleArray(questionOrder, numQuestions);
+
+    // Read and print the questions in the randomized order
+    file = fopen("questions.txt", "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    for (int i = 0; i < numQuestions; i++) {
+        int questionIndex = questionOrder[i];
+
+        fseek(file, 0, SEEK_SET);  // Move the file pointer to the beginning
+
+        for (int j = 0; j <= questionIndex; j++) {
+            if (fgets(line, MAX_LINE_LENGTH, file) == NULL) {
+                perror("Error reading file");
+                return 1;
+            }
+        }
+
+        printf("Question %d: %s\n", i + 1, line);
+
+        // Wait for the user to press Enter before showing the next question
+        printf("Press Enter for the next question...\n");
+        getchar();
+    }
+
+    fclose(file);
+    free(questionOrder);
+
+    return 0;
+} */
