@@ -19,12 +19,69 @@ void setcolor(int, int);
 void titleDraw();
 void gotoxy(int, int);
 int menuDraw();
+int mainDraw();
 int keyControl();
 
 int main() {
-    init();
-    titleDraw();
-    menuDraw();
+    while (1) {
+        titleDraw();
+        int menuCode = menuDraw();
+        if (menuCode == 0) {
+            //ID 입력
+            int n = mainDraw();
+
+            if (n == 0) {
+                //시사
+                cls;
+                gotoxy(95, 25);
+                printf("시사");
+                Sleep(1000);
+            }
+            else if (n == 25) {
+                //국가
+                cls;
+                gotoxy(95, 25);
+                printf("국가");
+                Sleep(1000);
+            }
+            else if (n == 50) {
+                //인물
+                cls;
+                gotoxy(95, 25);
+                printf("인물");
+                Sleep(1000);
+            }
+            else if (n == 75) {
+                //과학
+                cls;
+                gotoxy(95, 25);
+                printf("과학");
+                Sleep(1000);
+            }
+            else if (n == 100) {
+                //역사
+                cls;
+                gotoxy(95, 25);
+                printf("역사");
+                Sleep(1000);
+            }
+            else if (n == 125) {
+                //영어
+                cls;
+                gotoxy(95, 25);
+                printf("영어");
+                Sleep(1000);
+            }
+        }
+        else if (menuCode == 1) {
+            //ID가 없을 경우
+        }
+        else if (menuCode == 2) {
+            return 0;
+            //종료
+        }
+        cls;
+    }
     int keyCode = keyControl();
 
     return 0;
@@ -103,6 +160,55 @@ int keyControl() {
     else if (temp == ' ') { //엔터키로 변경
         return SUBMIT;
     }
+}
+int mainDraw() {
+    int x = 30;
+    int y = 35;
+    cls;
+    printf("\n\n\n");
+    printf("                                                                                         ComeOn Sense Quiz\n");
+
+    gotoxy(x - 2, y);
+    printf("> 시사");
+    gotoxy(x + 25, y);
+    printf("국가");
+    gotoxy(x + 50, y);
+    printf("인물");
+    gotoxy(x + 75, y);
+    printf("과학");
+    gotoxy(x + 100, y);
+    printf("역사");
+    gotoxy(x + 125, y);
+    printf("영어");
+
+    while (1) {
+        int n = keyControl();
+        switch (n) {
+        case RIGHT: {
+            if (x > 28 && x < 155) {
+                gotoxy(x - 2, y);
+                printf(" ");
+                x = x + 25;
+                gotoxy(x - 2, y);
+                printf(">");
+            }
+            break;
+        }
+        case LEFT: {
+            if (x < 157 && x > 28) {
+                gotoxy(x - 2, y);
+                printf(" ");
+                x = x - 25;
+                gotoxy(x - 2, y);
+                printf(">");
+            }
+            break;
+        }
+        case SUBMIT: {
+            return x - 30;
+        }
+        }
+   }
 }
 
 
