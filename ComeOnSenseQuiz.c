@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <stralign.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* define 선언 */
 #define pause system("pause > nul")
@@ -19,8 +20,16 @@ void setcolor(int, int);
 void titleDraw();
 void gotoxy(int, int);
 int menuDraw();
+void signup();
+int login();
+int isUsernameExists(const char* username);
 int mainDraw();
 int keyControl();
+
+/* 구조체 선언 */
+struct Member{
+    char username[20];
+};
 
 int main() {
     while (1) {
@@ -107,6 +116,24 @@ void gotoxy(int x, int y) {
     pos.Y = y;
     SetConsoleCursorPosition(consoleHandle, pos);
 }
+int keyControl() {
+    char temp = getch();
+    if (temp == 'w' || temp == "W") {
+        return UP;
+    }
+    else if (temp == 'a' || temp == "A") {
+        return LEFT;
+    }
+    else if (temp == 's' || temp == "S") {
+        return DOWN;
+    }
+    else if (temp == 'd' || temp == "D") {
+        return RIGHT;
+    }
+    else if (temp == ' ') { //엔터키로 변경
+        return SUBMIT;
+    }
+}
 int menuDraw() {
     int x = 90;
     int y = 35;
@@ -143,24 +170,6 @@ int menuDraw() {
         }
     }
 }
-int keyControl() {
-    char temp = getch();
-    if (temp == 'w' || temp == "W") {
-        return UP;
-    }
-    else if (temp == 'a' || temp == "A") {
-        return LEFT;
-    }
-    else if (temp == 's' || temp == "S") {
-        return DOWN;
-    }
-    else if (temp == 'd' || temp == "D") {
-        return RIGHT;
-    }
-    else if (temp == ' ') { //엔터키로 변경
-        return SUBMIT;
-    }
-}
 int mainDraw() {
     int x = 30;
     int y = 35;
@@ -195,7 +204,7 @@ int mainDraw() {
             break;
         }
         case LEFT: {
-            if (x < 157 && x > 28) {
+            if (x < 157 && x > 30) {
                 gotoxy(x - 2, y);
                 printf(" ");
                 x = x - 25;
