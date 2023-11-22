@@ -252,6 +252,41 @@ void signup() {
         printf("아이디를 불러올 수 없습니다.");
     }
 }
+int login() {
+    int x = 90;
+    int y = 35;
+    struct Member member;
+    char inputUsername[20];
+    FILE* file;
+
+    gotoxy(x, y);
+    printf("                ");
+    gotoxy(x, y+1);
+    printf("                ");
+    gotoxy(x, y+2);
+    printf("                ");
+    gotoxy(x, y);
+    printf("ID : ");
+    scanf("%s", inputUsername);
+
+    file = fopen("ID.txt", "r");
+    if (file != NULL) {
+        while (fscanf(file, "%s", member.username) == 1) {
+            if (strcmp(member.username, inputUsername) == 0) {
+                fclose(file);
+                gotoxy(x, y);
+                printf("로그인 성공");
+                Sleep(1000);
+                return 1;
+            }
+        }
+        fclose(file);
+    }
+    gotoxy(x, y);
+    printf("로그인 실패. 아이디가 존재하지 않거나 올바르지 않습니다.");
+    Sleep(1000);
+    return 0;
+}
 
 
 
