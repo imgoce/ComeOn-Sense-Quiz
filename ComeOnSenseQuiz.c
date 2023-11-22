@@ -287,6 +287,20 @@ int login() {
     Sleep(1000);
     return 0;
 }
+int isUsernameExists(const char* username) {
+    FILE* file = fopen("ID.txt", "r");
+    if (file != NULL) {
+        char existingUsername[20];
+        while (fscanf(file, "%s", existingUsername) == 1) {
+            if (strcmp(existingUsername, username) == 0) {
+                fclose(file);
+                return 1; // 아이디 존재
+            }
+        }
+        fclose(file);
+    }
+    return 0; // 아이디 존재하지 않음
+}
 
 
 
