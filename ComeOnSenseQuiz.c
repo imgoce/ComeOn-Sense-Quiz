@@ -32,62 +32,73 @@ struct Member{
 };
 
 int main() {
+    init();
     while (1) {
         titleDraw();
         int menuCode = menuDraw();
         if (menuCode == 0) {
             //ID 입력
-            int n = mainDraw();
-
-            if (n == 0) {
-                //시사
-                cls;
-                gotoxy(95, 25);
-                printf("시사");
-                Sleep(1000);
+            int i = login();
+            cls;
+            if (i == 1) {
+                int n = mainDraw();
+                if (n == 0) {
+                    //시사
+                    cls;
+                    gotoxy(95, 25);
+                    printf("시사");
+                    Sleep(1000);
+                    }
+                else if (n == 25) {
+                    //국가
+                    cls;
+                    gotoxy(95, 25);
+                    printf("국가");
+                    Sleep(1000);
+                    }
+                else if (n == 50) {
+                    //인물
+                    cls;
+                    gotoxy(95, 25);
+                    printf("인물");
+                    Sleep(1000);
+                    }
+                else if (n == 75) {
+                    //과학
+                    cls;
+                    gotoxy(95, 25);
+                    printf("과학");
+                    Sleep(1000);
+                    }
+                else if (n == 100) {
+                    //역사
+                    cls;
+                    gotoxy(95, 25);
+                    printf("역사");
+                    Sleep(1000);
+                    }
+                else if (n == 125) {
+                    //영어
+                    cls;
+                    gotoxy(95, 25);
+                    printf("영어");
+                    Sleep(1000);
+                    }
             }
-            else if (n == 25) {
-                //국가
-                cls;
-                gotoxy(95, 25);
-                printf("국가");
-                Sleep(1000);
-            }
-            else if (n == 50) {
-                //인물
-                cls;
-                gotoxy(95, 25);
-                printf("인물");
-                Sleep(1000);
-            }
-            else if (n == 75) {
-                //과학
-                cls;
-                gotoxy(95, 25);
-                printf("과학");
-                Sleep(1000);
-            }
-            else if (n == 100) {
-                //역사
-                cls;
-                gotoxy(95, 25);
-                printf("역사");
-                Sleep(1000);
-            }
-            else if (n == 125) {
-                //영어
-                cls;
-                gotoxy(95, 25);
-                printf("영어");
-                Sleep(1000);
+            else if (i == 0) {
+                continue;
             }
         }
         else if (menuCode == 1) {
             //ID가 없을 경우
+            signup();
+            Sleep(1000);
+            cls;
+            continue;
         }
         else if (menuCode == 2) {
-            return 0;
             //종료
+            return 0;
         }
         cls;
     }
@@ -170,55 +181,6 @@ int menuDraw() {
         }
     }
 }
-int mainDraw() {
-    int x = 30;
-    int y = 35;
-    cls;
-    printf("\n\n\n");
-    printf("                                                                                         ComeOn Sense Quiz\n");
-
-    gotoxy(x - 2, y);
-    printf("> 시사");
-    gotoxy(x + 25, y);
-    printf("국가");
-    gotoxy(x + 50, y);
-    printf("인물");
-    gotoxy(x + 75, y);
-    printf("과학");
-    gotoxy(x + 100, y);
-    printf("역사");
-    gotoxy(x + 125, y);
-    printf("영어");
-
-    while (1) {
-        int n = keyControl();
-        switch (n) {
-        case RIGHT: {
-            if (x > 28 && x < 155) {
-                gotoxy(x - 2, y);
-                printf(" ");
-                x = x + 25;
-                gotoxy(x - 2, y);
-                printf(">");
-            }
-            break;
-        }
-        case LEFT: {
-            if (x < 157 && x > 30) {
-                gotoxy(x - 2, y);
-                printf(" ");
-                x = x - 25;
-                gotoxy(x - 2, y);
-                printf(">");
-            }
-            break;
-        }
-        case SUBMIT: {
-            return x - 30;
-        }
-        }
-   }
-}
 void signup() {
     int x = 90;
     int y = 35;
@@ -300,6 +262,55 @@ int isUsernameExists(const char* username) {
         fclose(file);
     }
     return 0; // 아이디 존재하지 않음
+}
+int mainDraw() {
+    int x = 30;
+    int y = 35;
+    cls;
+    printf("\n\n\n");
+    printf("                                                                                         ComeOn Sense Quiz\n");
+
+    gotoxy(x - 2, y);
+    printf("> 시사");
+    gotoxy(x + 25, y);
+    printf("국가");
+    gotoxy(x + 50, y);
+    printf("인물");
+    gotoxy(x + 75, y);
+    printf("과학");
+    gotoxy(x + 100, y);
+    printf("역사");
+    gotoxy(x + 125, y);
+    printf("영어");
+
+    while (1) {
+        int n = keyControl();
+        switch (n) {
+        case RIGHT: {
+            if (x > 28 && x < 155) {
+                gotoxy(x - 2, y);
+                printf(" ");
+                x = x + 25;
+                gotoxy(x - 2, y);
+                printf(">");
+            }
+            break;
+        }
+        case LEFT: {
+            if (x < 157 && x > 30) {
+                gotoxy(x - 2, y);
+                printf(" ");
+                x = x - 25;
+                gotoxy(x - 2, y);
+                printf(">");
+            }
+            break;
+        }
+        case SUBMIT: {
+            return x - 30;
+        }
+        }
+   }
 }
 
 
