@@ -219,7 +219,39 @@ int mainDraw() {
         }
    }
 }
+void signup() {
+    int x = 90;
+    int y = 35;
+    gotoxy(x, y);
+    printf("                ");
+    gotoxy(x, y + 1);
+    printf("                ");
+    gotoxy(x, y + 2);
+    printf("                ");
+    gotoxy(x, y+1);
+    printf("사용할 아이디 입력 : ");
 
+    struct Member member;
+    FILE* file;
+
+    scanf("%s", member.username);
+    if (isUsernameExists(member.username)) {
+            gotoxy(x, y + 1);
+            printf("이미 존재하는 아이디입니다. 다른 아이디를 선택해주세요.");
+            return;
+        }
+    file = fopen("ID.txt", "a");
+    if (file != NULL) {
+        fprintf(file, "%s\n", member.username);
+        fclose(file);
+        gotoxy(x, y + 1);
+        printf("회원 가입이 완료되었습니다. ID : %s", member.username);
+    }
+    else {
+        gotoxy(x, y + 1);
+        printf("아이디를 불러올 수 없습니다.");
+    }
+}
 
 
 
