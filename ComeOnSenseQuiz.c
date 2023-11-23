@@ -147,7 +147,7 @@ int keyControl() {
         else if (temp == 'd' || temp == 'D' || GetAsyncKeyState(VK_RIGHT)) {
             return RIGHT;
         }
-        else if (GetAsyncKeyState(VK_RETURN)) {
+        else if (temp == '\r' || GetAsyncKeyState(VK_RETURN) & 0x8000) {
             return SUBMIT;
         }
         else {
