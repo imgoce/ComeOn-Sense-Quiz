@@ -41,6 +41,7 @@ int main() {
         if (menuCode == 0) {
             //ID 입력
             struct Member loginUser = login();
+            Sleep(1000);
             cls;
             if (strcmp(loginUser.username, "") != 0) {
                 data = loginUser;
@@ -254,7 +255,6 @@ struct Member login() {
     if (strlen(inputUsername) == 0) {
         gotoxy(x, y);
         printf("아이디를 입력해주세요.");
-        Sleep(1000);
         strcpy(member.username, "");
         return member;
     }
@@ -266,7 +266,6 @@ struct Member login() {
                 fclose(file);
                 gotoxy(x, y);
                 printf("로그인 성공");
-                Sleep(1000);
                 return member;
             }
         }
@@ -275,7 +274,6 @@ struct Member login() {
     strcpy(member.username, "");
     gotoxy(x, y);
     printf("로그인 실패. 아이디가 존재하지 않거나 올바르지 않습니다.");
-    Sleep(1000);
     return member;
 }
 int isUsernameExists(const char* username) {
