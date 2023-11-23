@@ -19,12 +19,13 @@ void init();
 void setcolor(int, int);
 void titleDraw();
 void gotoxy(int, int);
+int keyControl();
 int menuDraw();
 void signup();
-int login();
+struct Member login();
 int isUsernameExists(const char* username);
-int mainDraw();
-int keyControl();
+void loadUserInfo(struct Member loginUser);
+int mainDraw(struct Member loginUser);
 
 /* 구조체 선언 */
 struct Member{
@@ -33,60 +34,62 @@ struct Member{
 
 int main() {
     init();
+    struct Member data;
     while (1) {
         titleDraw();
         int menuCode = menuDraw();
         if (menuCode == 0) {
             //ID 입력
-            int i = login();
+            struct Member loginUser = login();
             cls;
-            if (i == 1) {
-                int n = mainDraw();
-                
+            if (strcmp(loginUser.username, "") != 0) {
+                data = loginUser;
+                int n = mainDraw(data);
+
                 if (n == 0) {
                     //시사
                     cls;
                     gotoxy(95, 25);
                     printf("시사");
                     Sleep(1000);
-                    }
+                }
                 else if (n == 25) {
                     //국가
                     cls;
                     gotoxy(95, 25);
                     printf("국가");
                     Sleep(1000);
-                    }
+                }
                 else if (n == 50) {
                     //인물
                     cls;
                     gotoxy(95, 25);
                     printf("인물");
                     Sleep(1000);
-                    }
+                }
                 else if (n == 75) {
                     //과학
                     cls;
                     gotoxy(95, 25);
                     printf("과학");
                     Sleep(1000);
-                    }
+                }
                 else if (n == 100) {
                     //역사
                     cls;
                     gotoxy(95, 25);
                     printf("역사");
                     Sleep(1000);
-                    }
+                }
                 else if (n == 125) {
                     //영어
                     cls;
                     gotoxy(95, 25);
                     printf("영어");
                     Sleep(1000);
-                    }
+                }
             }
-            else if (i == 0) {
+            else {
                 continue;
             }
         }
@@ -220,7 +223,7 @@ void signup() {
         printf("아이디를 불러올 수 없습니다.");
     }
 }
-int login() {
+struct Member login() {
     int x = 90;
     int y = 35;
     struct Member member;
@@ -245,15 +248,16 @@ int login() {
                 gotoxy(x, y);
                 printf("로그인 성공");
                 Sleep(1000);
-                return 1;
+                return member;
             }
         }
         fclose(file);
     }
+    strcpy(member.username, "");
     gotoxy(x, y);
     printf("로그인 실패. 아이디가 존재하지 않거나 올바르지 않습니다.");
     Sleep(1000);
-    return 0;
+    return member;
 }
 int isUsernameExists(const char* username) {
     FILE* file = fopen("ID.txt", "r");
@@ -269,12 +273,20 @@ int isUsernameExists(const char* username) {
     }
     return 0; // 아이디 존재하지 않음
 }
-int mainDraw() {
+void loadUserInfo(struct Member loginUser) {
+        gotoxy(10, 10);
+        printf("사용자 정보");
+        gotoxy(10, 11);
+        printf("ID : %s", loginUser.username);
+}
+int mainDraw(struct Member loginUser) {
     int x = 30;
     int y = 35;
     cls;
     printf("\n\n\n");
     printf("                                                                                         ComeOn Sense Quiz\n");
+
+    loadUserInfo(loginUser);
 
     gotoxy(x - 2, y);
     printf("> 시사");
