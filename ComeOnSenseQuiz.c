@@ -129,21 +129,26 @@ void gotoxy(int x, int y) {
     SetConsoleCursorPosition(consoleHandle, pos);
 }
 int keyControl() {
-    char temp = getch();
-    if (temp == 'w' || temp == "W") {
-        return UP;
-    }
-    else if (temp == 'a' || temp == "A") {
-        return LEFT;
-    }
-    else if (temp == 's' || temp == "S") {
-        return DOWN;
-    }
-    else if (temp == 'd' || temp == "D") {
-        return RIGHT;
-    }
-    else if (temp == ' ') { //엔터키로 변경
-        return SUBMIT;
+    while (1) {
+        char temp = getch();
+        if (temp == 'w' || temp == 'W' || GetAsyncKeyState(VK_UP)) {
+            return UP;
+        }
+        else if (temp == 'a' || temp == 'A' || GetAsyncKeyState(VK_LEFT)) {
+            return LEFT;
+        }
+        else if (temp == 's' || temp == 'S' || GetAsyncKeyState(VK_DOWN)) {
+            return DOWN;
+        }
+        else if (temp == 'd' || temp == 'D' || GetAsyncKeyState(VK_RIGHT)) {
+            return RIGHT;
+        }
+        else if (GetAsyncKeyState(VK_RETURN)) {
+            return SUBMIT;
+        }
+        else {
+            continue;
+        }
     }
 }
 int menuDraw() {
@@ -313,7 +318,6 @@ int mainDraw() {
         }
    }
 }
-
 /* 파일에 저장된 문제를 랜덤으로 출력 후 엔터를 누르면 다음 문제로 넘어감
 #define _CRT_SECURE_NO_WARNINGS
 
