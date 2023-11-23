@@ -247,7 +247,17 @@ struct Member login() {
     printf("                ");
     gotoxy(x, y);
     printf("ID : ");
-    scanf("%s", inputUsername);
+    
+    fgets(inputUsername, sizeof(inputUsername), stdin);
+    inputUsername[strcspn(inputUsername, "\n")] = '\0';
+
+    if (strlen(inputUsername) == 0) {
+        gotoxy(x, y);
+        printf("아이디를 입력해주세요.");
+        Sleep(1000);
+        strcpy(member.username, "");
+        return member;
+    }
 
     file = fopen("ID.txt", "r");
     if (file != NULL) {
