@@ -205,12 +205,21 @@ void signup() {
     struct Member member;
     FILE* file;
 
-    scanf("%s", member.username);
+    fgets(member.username, sizeof(member.username), stdin);
+    member.username[strcspn(member.username, "\n")] = '\0';
+
+    if (strlen(member.username) == 0) {
+        gotoxy(x, y + 1);
+        printf("사용할 아이디를 입력해주세요.");
+        return;
+    }
+
     if (isUsernameExists(member.username)) {
             gotoxy(x, y + 1);
             printf("이미 존재하는 아이디입니다. 다른 아이디를 선택해주세요.");
             return;
         }
+
     file = fopen("ID.txt", "a");
     if (file != NULL) {
         fprintf(file, "%s\n", member.username);
