@@ -347,10 +347,10 @@ int mainDraw(struct Member loginUser) {
         }
    }
 }
-/* 파일에 저장된 문제를 랜덤으로 출력 후 엔터를 누르면 다음 문제로 넘어감
+//파일에 저장된 문제를 랜덤으로 출력 후 엔터를 누르면 다음 문제로 넘어감
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <stdio.h>
+/*#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
