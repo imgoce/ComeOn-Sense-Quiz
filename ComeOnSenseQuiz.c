@@ -28,6 +28,9 @@ struct Member login();
 int isUsernameExists(const char* username);
 void loadUserInfo(struct Member loginUser);
 int mainDraw(struct Member loginUser);
+int level();
+void shuffleArray(int, int);
+int questions();
 
 /* 구조체 선언 */
 struct Member{
