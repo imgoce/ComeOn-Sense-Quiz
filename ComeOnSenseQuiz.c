@@ -353,7 +353,7 @@ int mainDraw(struct Member loginUser) {
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-include <time.h>
+#include <time.h>
 
 #define MAX_LINE_LENGTH 100
 
