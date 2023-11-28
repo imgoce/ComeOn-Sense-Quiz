@@ -14,6 +14,7 @@
 #define LEFT 2
 #define RIGHT 3
 #define SUBMIT 4
+#define MAX_LINE_LENGTH 100
 
 /* 함수 선언 */
 void init();
