@@ -375,7 +375,19 @@ int level() {
             }
             break;
         }
-        
+        case DOWN: {
+            if (y < 26) {
+                gotoxy(x - 2, y);
+                printf(" ");
+                y = y + 3;
+                gotoxy(x - 2, y);
+                printf(">");
+            }
+            break;
+        }
+        case SUBMIT: {
+            return y - 20;
+        }
         }
     }
 }
