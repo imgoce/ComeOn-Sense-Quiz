@@ -58,6 +58,16 @@ int main() {
                     gotoxy(95, 25);
                     printf("시사");
                     Sleep(1000);
+                    int i = level();
+                    if (i == 0) {
+                        questions();
+                    }
+                    else if (i == 3) {
+
+                    }
+                    else if (i == 6) {
+
+                    }
                 }
                 else if (n == 25) {
                     //국가
