@@ -4,6 +4,7 @@
 #include <stralign.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 /* define 선언 */
 #define pause system("pause > nul")
@@ -346,25 +347,6 @@ int mainDraw(struct Member loginUser) {
         }
         }
    }
-}
-//파일에 저장된 문제를 랜덤으로 출력 후 엔터를 누르면 다음 문제로 넘어감
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-
-#define MAX_LINE_LENGTH 100
-
-void shuffleArray(int arr[], int n) {
-    // Fisher-Yates shuffle algorithm
-    for (int i = n - 1; i > 0; i--) {
-        int j = rand() % (i + 1);
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-    }
 }
 
 /*int main() {
