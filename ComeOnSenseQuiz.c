@@ -362,7 +362,22 @@ int level() {
     printf("Normal");
     gotoxy(x, y + 6);
     printf("Hard");
-    
+    while (1) {
+        int n = keyControl();
+        switch (n) {
+        case UP: {
+            if (y > 20) {
+                gotoxy(x - 2, y);
+                printf(" ");
+                y = y - 3;
+                gotoxy(x - 2, y);
+                printf(">");
+            }
+            break;
+        }
+        
+        }
+    }
 }
 
 /*int main() {
