@@ -40,6 +40,8 @@ struct Member{
 int main() {
     init();
     struct Member data;
+    const char* fileName = NULL;
+
     while (1) {
         titleDraw();
         int menuCode = menuDraw();
@@ -60,13 +62,13 @@ int main() {
                     Sleep(1000);
                     int i = level();
                     if (i == 0) {
-                        questions();
+                        fileName = "Current Easy Level.txt";
                     }
                     else if (i == 3) {
-
+                        fileName = "Current Normal Level.txt";
                     }
                     else if (i == 6) {
-
+                        fileName = "Current Hard Level.txt";
                     }
                 }
                 else if (n == 25) {
@@ -75,6 +77,16 @@ int main() {
                     gotoxy(95, 25);
                     printf("국가");
                     Sleep(1000);
+                    int i = level();
+                    if (i == 0) {
+                        fileName = "Country Easy Level";
+                    }
+                    else if (i == 3) {
+                        fileName = "Country Normal Level";
+                    }
+                    else if (i == 6) {
+                        fileName = "Country Hard Level";
+                    }
                 }
                 else if (n == 50) {
                     //인물
@@ -82,6 +94,16 @@ int main() {
                     gotoxy(95, 25);
                     printf("인물");
                     Sleep(1000);
+                    int i = level();
+                    if (i == 0) {
+                        fileName = "Person Easy Level";
+                    }
+                    else if (i == 3) {
+                        fileName = "Person Normal Level";
+                    }
+                    else if (i == 6) {
+                        fileName = "Person Hard Level";
+                    }
                 }
                 else if (n == 75) {
                     //과학
@@ -89,6 +111,16 @@ int main() {
                     gotoxy(95, 25);
                     printf("과학");
                     Sleep(1000);
+                    int i = level();
+                    if (i == 0) {
+                        fileName = "Science Easy Level";
+                    }
+                    else if (i == 3) {
+                        fileName = "Science Normal Level";
+                    }
+                    else if (i == 6) {
+                        fileName = "Science Hard Level";
+                    }
                 }
                 else if (n == 100) {
                     //역사
@@ -96,6 +128,16 @@ int main() {
                     gotoxy(95, 25);
                     printf("역사");
                     Sleep(1000);
+                    int i = level();
+                    if (i == 0) {
+                        fileName = "History Easy Level";
+                    }
+                    else if (i == 3) {
+                        fileName = "History Normal Level";
+                    }
+                    else if (i == 6) {
+                        fileName = "History Hard Level";
+                    }
                 }
                 else if (n == 125) {
                     //영어
@@ -103,6 +145,16 @@ int main() {
                     gotoxy(95, 25);
                     printf("영어");
                     Sleep(1000);
+                    int i = level();
+                    if (i == 0) {
+                        fileName = "English Easy Level";
+                    }
+                    else if (i == 3) {
+                        fileName = "English Normal Level";
+                    }
+                    else if (i == 6) {
+                        fileName = "English Hard Level";
+                    }
                 }
             }
             else {
@@ -120,18 +172,21 @@ int main() {
             //종료
             return 0;
         }
+        int result = questions(fileName);
+        if (result != 0) {
+            printf("Error executing questions function.\n");
+            return 1;
+        }
         cls;
     }
     int keyCode = keyControl();
 
     return 0;
 }
-
 void init() {
     system("mode con cols=190 lines=50 | title ComeOn Sense Quiz");
 }
-void setcolor(int text, int back)
-{
+void setcolor(int text, int back){
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text | (back << 4));
 }
 void titleDraw() {
