@@ -3,8 +3,6 @@
 #include <windows.h>
 #include <stralign.h>
 #include <stdlib.h>
-#include <string.h>
-#include <time.h>
 
 /* define 선언 */
 #define pause system("pause > nul")
@@ -14,200 +12,29 @@
 #define LEFT 2
 #define RIGHT 3
 #define SUBMIT 4
-#define MAX_FILE_NAME_LENGTH 100
-#define MAX_LINE_LENGTH 100
-#define MAX_QUESTION_LENGTH 256
-#define MAX_ANSWER_LENGTH 64
-#define MAX_QUESTIONS 100
-#define MAX_WRONG_ANSWERS 100
 
 /* 함수 선언 */
-void init(); //크기 설정
-void setcolor(int, int); //색상 설정
-void titleDraw(); //제목 설정
-void gotoxy(int, int); //좌표 이동
-int keyControl(); //키 조작 설정
-int menuDraw(); //초기 화면
-void signup(); //회원가입
-struct Member login(); //로그인
-int isUsernameExists(const char* username); //사용자가 존재하는 지 판단
-void loadUserInfo(struct Member loginUser); //사용자 정보
-int mainDraw(struct Member loginUser); //메인 화면
-int level(); //난이도 선택
-void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], int* numQuestions); //문제를 파일에서 불러옴
-int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]); //정답인지 확인
-void saveWrongAnswer(char* filename, char question[MAX_QUESTION_LENGTH], char correctAnswer[MAX_ANSWER_LENGTH], char userAnswer[MAX_ANSWER_LENGTH]); //오답노트 저장
-int questions(struct Member loginUser, const char* fileName, const char* fileName2, const char* username); //문제 출력
-char* generateWrongAnswersFilename(const char* username); //오답노트 파일 이름 생성
-int CorrectAnswers(); //정답
-int WrongAnswers(); //오답
-
-/* 구조체 선언 */
-struct Member{
-    char username[20];
-    char wrongAnswersFilename[MAX_FILE_NAME_LENGTH];
-};
+void init();
+void titleDraw();
+void gotoxy(int, int);
+int menuDraw();
+int keyControl();
 
 int main() {
     init();
-    struct Member data;
-    const char* fileName = NULL;
-    const char* fileName2 = NULL;
-    struct Member loginUser;
-    
-    while (1) {
-        titleDraw();
-        int menuCode = menuDraw();
-        if (menuCode == 0) {
-            //ID 입력
-            loginUser = login();
-            Sleep(1000);
-            cls;
-            if (strcmp(loginUser.username, "") != 0) {
-                data = loginUser;
-                int n = mainDraw(data);
-
-                if (n == 0) {
-                    //시사
-                    cls;
-                    gotoxy(95, 25);
-                    printf("시사");
-                    Sleep(1000);
-                    int i = level();
-                    if (i == 0) {
-                        fileName = "Current Easy Level.txt";
-                        fileName2 = "Current Easy Level Answers.txt";
-                    }
-                    else if (i == 3) {
-                        fileName = "Current Normal Level.txt";
-                    }
-                    else if (i == 6) {
-                        fileName = "Current Hard Level.txt";
-                    }
-                }
-                else if (n == 25) {
-                    //국가
-                    cls;
-                    gotoxy(95, 25);
-                    printf("국가");
-                    Sleep(1000);
-                    int i = level();
-                    if (i == 0) {
-                        fileName = "Country Easy Level.txt";
-                    }
-                    else if (i == 3) {
-                        fileName = "Country Normal Level.txt";
-                    }
-                    else if (i == 6) {
-                        fileName = "Country Hard Level.txt";
-                    }
-                }
-                else if (n == 50) {
-                    //인물
-                    cls;
-                    gotoxy(95, 25);
-                    printf("인물");
-                    Sleep(1000);
-                    int i = level();
-                    if (i == 0) {
-                        fileName = "Person Easy Level.txt";
-                    }
-                    else if (i == 3) {
-                        fileName = "Person Normal Level.txt";
-                    }
-                    else if (i == 6) {
-                        fileName = "Person Hard Level.txt";
-                    }
-                }
-                else if (n == 75) {
-                    //과학
-                    cls;
-                    gotoxy(95, 25);
-                    printf("과학");
-                    Sleep(1000);
-                    int i = level();
-                    if (i == 0) {
-                        fileName = "Science Easy Level.txt";
-                    }
-                    else if (i == 3) {
-                        fileName = "Science Normal Level.txt";
-                    }
-                    else if (i == 6) {
-                        fileName = "Science Hard Level.txt";
-                    }
-                }
-                else if (n == 100) {
-                    //역사
-                    cls;
-                    gotoxy(95, 25);
-                    printf("역사");
-                    Sleep(1000);
-                    int i = level();
-                    if (i == 0) {
-                        fileName = "History Easy Level.txt";
-                    }
-                    else if (i == 3) {
-                        fileName = "History Normal Level.txt";
-                    }
-                    else if (i == 6) {
-                        fileName = "History Hard Level.txt";
-                    }
-                }
-                else if (n == 125) {
-                    //영어
-                    cls;
-                    gotoxy(95, 25);
-                    printf("영어");
-                    Sleep(1000);
-                    int i = level();
-                    if (i == 0) {
-                        fileName = "English Easy Level.txt";
-                    }
-                    else if (i == 3) {
-                        fileName = "English Normal Level.txt";
-                    }
-                    else if (i == 6) {
-                        fileName = "English Hard Level.txt";
-                    }
-                }
-            }
-            else {
-                continue;
-            }
-        }
-        else if (menuCode == 1) {
-            //ID가 없을 경우
-            signup();
-            Sleep(1000);
-            cls;
-            continue;
-        }
-        else if (menuCode == 2) {
-            //종료
-            return 0;
-        }
-        int result = questions(loginUser, fileName, fileName2, data.username);
-        if (result != 0) {
-            printf("Error executing questions function.\n");
-            return 1;
-        }
-        cls;
-    }
+    titleDraw();
+    menuDraw();
     int keyCode = keyControl();
 
     return 0;
 }
+
 void init() {
-    system("mode con cols=190 lines=50 | title ComeOn Sense Quiz");
-}
-void setcolor(int text, int back){
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text | (back << 4));
+    system("mode con cols=56 lines=20 | title ComeOn Sense Quiz");
 }
 void titleDraw() {
-    printf("\n\n\n\n\n\n");
-    setcolor(3, 0);
-    printf("                                                                                         ComeOn Sense Quiz\n");
-    setcolor(7, 0);
+    printf("\n\n\n\n");
+    printf("                    ComeOn Sense Quiz\n");
 }
 void gotoxy(int x, int y) {
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -216,32 +43,9 @@ void gotoxy(int x, int y) {
     pos.Y = y;
     SetConsoleCursorPosition(consoleHandle, pos);
 }
-int keyControl() {
-    while (1) {
-        char temp = getch();
-        if (temp == 'w' || temp == 'W' || GetAsyncKeyState(VK_UP)) {
-            return UP;
-        }
-        else if (temp == 'a' || temp == 'A' || GetAsyncKeyState(VK_LEFT)) {
-            return LEFT;
-        }
-        else if (temp == 's' || temp == 'S' || GetAsyncKeyState(VK_DOWN)) {
-            return DOWN;
-        }
-        else if (temp == 'd' || temp == 'D' || GetAsyncKeyState(VK_RIGHT)) {
-            return RIGHT;
-        }
-        else if (temp == '\r' || GetAsyncKeyState(VK_RETURN) & 0x8000) {
-            return SUBMIT;
-        }
-        else {
-            continue;
-        }
-    }
-}
 int menuDraw() {
-    int x = 90;
-    int y = 35;
+    int x = 24;
+    int y = 12;
     gotoxy(x - 2, y);
     printf("> ID 입력");
     gotoxy(x, y+1);
@@ -252,7 +56,7 @@ int menuDraw() {
         int n = keyControl();
         switch (n) {
         case UP: {
-            if (y > 35) {
+            if (y > 12) {
                 gotoxy(x - 2, y);
                 printf(" ");
                 gotoxy(x - 2, --y);
@@ -261,7 +65,7 @@ int menuDraw() {
             break;
         }
         case DOWN: {
-            if (y < 37) {
+            if (y < 14) {
                 gotoxy(x - 2, y);
                 printf(" ");
                 gotoxy(x - 2, ++y);
@@ -270,297 +74,307 @@ int menuDraw() {
             break;
         }
         case SUBMIT: {
-            return y - 35;
+            return y - 12;
         }
         }
     }
 }
-void signup() {
-    int x = 90;
-    int y = 35;
-    gotoxy(x, y);
-    printf("                ");
-    gotoxy(x, y + 1);
-    printf("                ");
-    gotoxy(x, y + 2);
-    printf("                ");
-    gotoxy(x, y+1);
-    printf("사용할 아이디 입력 : ");
+int keyControl() {
+    char temp = getch();
+    if (temp == 'w' || temp == "W") {
+        return UP;
+    }
+    else if (temp == 'a' || temp == "A") {
+        return LEFT;
+    }
+    else if (temp == 's' || temp == "S") {
+        return DOWN;
+    }
+    else if (temp == 'd' || temp == "D") {
+        return RIGHT;
+    }
+    else if (temp == ' ') { //엔터키로 변경
+        return SUBMIT;
+    }
+}
 
+
+
+
+/* 회원가입과 로그인 기능 
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Member {
+    char username[50];
+};
+
+void signup();
+void login();
+int isUsernameExists(const char* username);
+
+int main() {
+    int choice;
+
+    do {
+        printf("\n1. 회원 가입\n");
+        printf("2. 로그인\n");
+        printf("3. 종료\n");
+        printf("선택: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+        case 1:
+            signup();
+            break;
+        case 2:
+            login();
+            break;
+        case 3:
+            printf("프로그램을 종료합니다.\n");
+            break;
+        default:
+            printf("올바른 선택이 아닙니다. 다시 선택해주세요.\n");
+        }
+    } while (choice != 3);
+
+    return 0;
+}
+
+void signup() {
     struct Member member;
     FILE* file;
 
-    fgets(member.username, sizeof(member.username), stdin);
-    member.username[strcspn(member.username, "\n")] = '\0';
+    printf("아이디: ");
+    scanf("%s", member.username);
 
-    if (strlen(member.username) == 0) {
-        gotoxy(x, y + 1);
-        printf("사용할 아이디를 입력해주세요.");
+    // 아이디 중복 확인
+    if (isUsernameExists(member.username)) {
+        printf("이미 존재하는 아이디입니다. 다른 아이디를 선택해주세요.\n");
         return;
     }
 
-    if (isUsernameExists(member.username)) {
-            gotoxy(x, y + 1);
-            printf("이미 존재하는 아이디입니다. 다른 아이디를 선택해주세요.");
-            return;
-        }
-
-    file = fopen("ID.txt", "a");
+    file = fopen("members.txt", "a");
     if (file != NULL) {
         fprintf(file, "%s\n", member.username);
         fclose(file);
-        gotoxy(x, y + 1);
-        printf("회원 가입이 완료되었습니다. ID : %s", member.username);
+        printf("회원 가입이 완료되었습니다.\n");
     }
     else {
-        gotoxy(x, y + 1);
-        printf("아이디를 불러올 수 없습니다.");
+        printf("파일을 열 수 없습니다.\n");
     }
 }
-struct Member login() {
-    int x = 90;
-    int y = 35;
+
+void login() {
     struct Member member;
-    char inputUsername[20];
+    char inputUsername[50];
     FILE* file;
 
-    gotoxy(x, y);
-    printf("                ");
-    gotoxy(x, y+1);
-    printf("                ");
-    gotoxy(x, y+2);
-    printf("                ");
-    gotoxy(x, y);
-    printf("ID : ");
-    
-    fgets(inputUsername, sizeof(inputUsername), stdin);
-    inputUsername[strcspn(inputUsername, "\n")] = '\0';
+    printf("아이디: ");
+    scanf("%s", inputUsername);
 
-    if (strlen(inputUsername) == 0) {
-        gotoxy(x, y);
-        printf("아이디를 입력해주세요.");
-        strcpy(member.username, "");
-        return member;
-    }
-
-    file = fopen("ID.txt", "r");
+    file = fopen("members.txt", "r");
     if (file != NULL) {
         while (fscanf(file, "%s", member.username) == 1) {
             if (strcmp(member.username, inputUsername) == 0) {
                 fclose(file);
-                gotoxy(x, y);
-                printf("로그인 성공");
-                return member;
+                printf("로그인 성공!\n");
+                return;
             }
         }
         fclose(file);
     }
-    strcpy(member.username, "");
-    gotoxy(x, y);
-    printf("로그인 실패. 아이디가 존재하지 않거나 올바르지 않습니다.");
-    return member;
+
+    printf("로그인 실패. 아이디가 올바르지 않습니다.\n");
 }
+
 int isUsernameExists(const char* username) {
-    FILE* file = fopen("ID.txt", "r");
+    FILE* file = fopen("members.txt", "r");
     if (file != NULL) {
-        char existingUsername[20];
+        char existingUsername[50];
         while (fscanf(file, "%s", existingUsername) == 1) {
             if (strcmp(existingUsername, username) == 0) {
                 fclose(file);
-                return 1; // 아이디 존재
+                return 1; // 아이디가 이미 존재함
             }
         }
         fclose(file);
     }
-    return 0; // 아이디 존재하지 않음
-}
-void loadUserInfo(struct Member loginUser) {
-        gotoxy(10, 10);
-        printf("사용자 정보");
-        gotoxy(10, 11);
-        printf("ID : %s", loginUser.username);
-}
-int mainDraw(struct Member loginUser) {
-    int x = 30;
-    int y = 35;
-    cls;
-    printf("\n\n\n");
-    printf("                                                                                         ComeOn Sense Quiz\n");
+    return 0; // 아이디가 존재하지 않음
+}*/
 
-    loadUserInfo(loginUser);
+/* 파일에 저장된 문제를 랜덤으로 출력 후 엔터를 누르면 다음 문제로 넘어감
+#define _CRT_SECURE_NO_WARNINGS
 
-    gotoxy(x - 2, y);
-    printf("> 시사");
-    gotoxy(x + 25, y);
-    printf("국가");
-    gotoxy(x + 50, y);
-    printf("인물");
-    gotoxy(x + 75, y);
-    printf("과학");
-    gotoxy(x + 100, y);
-    printf("역사");
-    gotoxy(x + 125, y);
-    printf("영어");
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
-    while (1) {
-        int n = keyControl();
-        switch (n) {
-        case RIGHT: {
-            if (x > 28 && x < 155) {
-                gotoxy(x - 2, y);
-                printf(" ");
-                x = x + 25;
-                gotoxy(x - 2, y);
-                printf(">");
-            }
-            break;
-        }
-        case LEFT: {
-            if (x < 157 && x > 30) {
-                gotoxy(x - 2, y);
-                printf(" ");
-                x = x - 25;
-                gotoxy(x - 2, y);
-                printf(">");
-            }
-            break;
-        }
-        case SUBMIT: {
-            return x - 30;
-        }
-        }
-   }
-}
-int level() {
-    cls;
-    int x = 90;
-    int y = 20;
-    gotoxy(x - 2, y);
-    printf("> Easy");
-    gotoxy(x, y+3);
-    printf("Normal");
-    gotoxy(x, y + 6);
-    printf("Hard");
-    while (1) {
-        int n = keyControl();
-        switch (n) {
-        case UP: {
-            if (y > 20) {
-                gotoxy(x - 2, y);
-                printf(" ");
-                y = y - 3;
-                gotoxy(x - 2, y);
-                printf(">");
-            }
-            break;
-        }
-        case DOWN: {
-            if (y < 26) {
-                gotoxy(x - 2, y);
-                printf(" ");
-                y = y + 3;
-                gotoxy(x - 2, y);
-                printf(">");
-            }
-            break;
-        }
-        case SUBMIT: {
-            return y - 20;
-        }
-        }
+#define MAX_LINE_LENGTH 100
+
+void shuffleArray(int arr[], int n) {
+    // Fisher-Yates shuffle algorithm
+    for (int i = n - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 }
-int questions(struct Member loginUser, const char* fileName, const char* fileName2, const char* username) {
-    cls;
-    char questionFilename[MAX_FILE_NAME_LENGTH];
-    char answerFilename[MAX_FILE_NAME_LENGTH];
-    strcpy(questionFilename, fileName);
-    strcpy(answerFilename, fileName2);
-    struct Member loggedInUser;
-    loggedInUser = loginUser;
-    char* wrongAnswersFilename = generateWrongAnswersFilename(loggedInUser.username);
 
-    char formattedWrongAnswersFilename[MAX_FILE_NAME_LENGTH];
-    snprintf(formattedWrongAnswersFilename, MAX_FILE_NAME_LENGTH, "%s_wrong_answers.txt", username);
+int main() {
+    FILE* file;
+    char line[MAX_LINE_LENGTH];
+    int* questionOrder;
+    int numQuestions = 0;
+
+    // Count the number of questions in the file
+    file = fopen("questions.txt", "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    while (fgets(line, MAX_LINE_LENGTH, file) != NULL) {
+        numQuestions++;
+    }
+
+    fclose(file);
+
+    // Create an array to store the order in which questions will be asked
+    questionOrder = (int*)malloc(numQuestions * sizeof(int));
+    if (questionOrder == NULL) {
+        perror("Error allocating memory");
+        return 1;
+    }
+
+    for (int i = 0; i < numQuestions; i++) {
+        questionOrder[i] = i;
+    }
+
+    // Shuffle the array to randomize the order of questions
+    srand((unsigned int)time(NULL));
+    shuffleArray(questionOrder, numQuestions);
+
+    // Read and print the questions in the randomized order
+    file = fopen("questions.txt", "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 1;
+    }
+
+    for (int i = 0; i < numQuestions; i++) {
+        int questionIndex = questionOrder[i];
+
+        fseek(file, 0, SEEK_SET);  // Move the file pointer to the beginning
+
+        for (int j = 0; j <= questionIndex; j++) {
+            if (fgets(line, MAX_LINE_LENGTH, file) == NULL) {
+                perror("Error reading file");
+                return 1;
+            }
+        }
+
+        printf("Question %d: %s\n", i + 1, line);
+
+        // Wait for the user to press Enter before showing the next question
+        printf("Press Enter for the next question...\n");
+        getchar();
+    }
+
+    fclose(file);
+    free(questionOrder);
+
+    return 0;
+} */
+/*qustion.txt 문제를 랜덤으로 출력 후 answer.txt 답과 비교해 일치하면 정답 그렇지 않다면 오답을 출력함
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#define MAX_QUESTION_LENGTH 256
+#define MAX_ANSWER_LENGTH 64
+#define MAX_QUESTIONS 100
+
+void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], int* numQuestions);
+int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]);
+
+int main() {
+    char questionFilename[] = "question.txt";
+    char answerFilename[] = "answer.txt";
 
     char questions[MAX_QUESTIONS][MAX_QUESTION_LENGTH];
     char answers[MAX_QUESTIONS][MAX_ANSWER_LENGTH];
     int numQuestions = 0;
 
-    while (1) {
-        readQuestionAndAnswer(questionFilename, answerFilename, questions, answers, &numQuestions);
+    readQuestionAndAnswer(questionFilename, answerFilename, questions, answers, &numQuestions);
 
-        if (numQuestions == 0) {
-            printf("문제 파일 또는 정답 파일을 읽을 수 없습니다.\n");
-            return 1;
-        }
-
-        srand(time(NULL));
-
-        char userAnswer[MAX_ANSWER_LENGTH];
-        char exitInput[MAX_ANSWER_LENGTH] = "q";
-
-        int* questionOrder = (int*)malloc(numQuestions * sizeof(int));
-        if (questionOrder == NULL) {
-            printf("메모리 할당 오류\n");
-            return 1;
-        }
-
-        for (int i = 0; i < numQuestions; i++) {
-            questionOrder[i] = i;
-        }
-
-        FILE* wrongAnswersFile = fopen(wrongAnswersFilename, "a");
-        if (wrongAnswersFile == NULL) {
-            printf("오답 노트 파일을 열 수 없습니다.\n");
-            return 1;
-        }
-
-        for (int i = 0; i < numQuestions; i++) {
-            int randomIndex = i + rand() % (numQuestions - i);
-
-            int temp = questionOrder[i];
-            questionOrder[i] = questionOrder[randomIndex];
-            questionOrder[randomIndex] = temp;
-
-            int currentQuestionIndex = questionOrder[i];
-
-            gotoxy(50, 15);
-            printf("문제: %s\n", questions[currentQuestionIndex]);
-
-            gotoxy(80, 35);
-            printf("답 (종료하려면 'q' 입력): ");
-            scanf("%s", userAnswer);
-
-            if (strcmp(userAnswer, exitInput) == 0) {
-                printf("프로그램을 종료합니다.\n");
-                Sleep(1000);
-                cls;
-                break;
-            }
-
-            if (checkAnswer(currentQuestionIndex, userAnswer, answers)) {
-                CorrectAnswers();
-                Sleep(1000);
-                cls;
-            }
-            else {
-                WrongAnswers();
-                saveWrongAnswer(wrongAnswersFilename, questions[currentQuestionIndex], answers[currentQuestionIndex], userAnswer);
-                Sleep(1000);
-                cls;
-            }
-
-            while (getchar() != '\n');
-        }
-        fclose(wrongAnswersFile);
-        free(questionOrder);
-        break;
+    if (numQuestions == 0) {
+        printf("문제 파일 또는 정답 파일을 읽을 수 없습니다.\n");
+        return 1;
     }
 
-    free(wrongAnswersFilename);
+    srand(time(NULL)); // 시간을 기반으로 난수 생성기 초기화
+
+    char userAnswer[MAX_ANSWER_LENGTH];
+    char exitInput[MAX_ANSWER_LENGTH] = "q";
+
+    int* questionOrder = (int*)malloc(numQuestions * sizeof(int));
+    if (questionOrder == NULL) {
+        printf("메모리 할당 오류\n");
+        return 1;
+    }
+
+    // 문제 순서 초기화
+    for (int i = 0; i < numQuestions; i++) {
+        questionOrder[i] = i;
+    }
+
+    for (int i = 0; i < numQuestions; i++) {
+        // 현재 남은 문제 중 랜덤으로 문제 선택
+        int randomIndex = i + rand() % (numQuestions - i);
+
+        // 선택한 문제와 현재 위치의 문제 교환
+        int temp = questionOrder[i];
+        questionOrder[i] = questionOrder[randomIndex];
+        questionOrder[randomIndex] = temp;
+
+        int currentQuestionIndex = questionOrder[i];
+
+        printf("문제: %s\n", questions[currentQuestionIndex]);
+
+        printf("답을 입력하세요 (종료하려면 'q' 입력): ");
+        scanf("%s", userAnswer);
+
+        if (strcmp(userAnswer, exitInput) == 0) {
+            printf("프로그램을 종료합니다.\n");
+            break;
+        }
+
+        if (checkAnswer(currentQuestionIndex, userAnswer, answers)) {
+            printf("정답!\n");
+        }
+        else {
+            printf("오답! 정답은 %s 입니다.\n", answers[currentQuestionIndex]);
+        }
+
+        // 사용자 입력 버퍼 비우기
+        while (getchar() != '\n');
+    }
+
+    free(questionOrder); // 동적 할당된 메모리 해제
+
     return 0;
 }
+
 void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], int* numQuestions) {
     FILE* questionFile = fopen(questionFilename, "r");
     FILE* answerFile = fopen(answerFilename, "r");
@@ -572,6 +386,7 @@ void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char qu
 
     *numQuestions = 0;
     while (fgets(questions[*numQuestions], MAX_QUESTION_LENGTH, questionFile) != NULL && fgets(answers[*numQuestions], MAX_ANSWER_LENGTH, answerFile) != NULL) {
+        // 개행 문자 제거
         questions[*numQuestions][strcspn(questions[*numQuestions], "\n")] = 0;
         answers[*numQuestions][strcspn(answers[*numQuestions], "\n")] = 0;
 
@@ -581,155 +396,8 @@ void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char qu
     fclose(questionFile);
     fclose(answerFile);
 }
+
 int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]) {
     return strcmp(userAnswer, answers[questionIndex]) == 0;
 }
-char* generateWrongAnswersFilename(const char* username) {
-    char* filename = (char*)malloc(MAX_FILE_NAME_LENGTH * sizeof(char));
-    if (filename == NULL) {
-        printf("메모리 할당 오류\n");
-        return NULL;
-    }
-    snprintf(filename, MAX_FILE_NAME_LENGTH, "%s_wrong_answers.txt", username);
-
-    return filename;
-}
-void saveWrongAnswer(char* filename, char question[MAX_QUESTION_LENGTH], char correctAnswer[MAX_ANSWER_LENGTH], char userAnswer[MAX_ANSWER_LENGTH]) {
-    FILE* file = fopen(filename, "r");
-    int alreadySaved = 0;
-
-    if (file != NULL) {
-        char allLines[MAX_QUESTIONS][MAX_QUESTION_LENGTH + MAX_ANSWER_LENGTH + MAX_ANSWER_LENGTH + 30]; // 모든 줄을 저장할 배열
-        int numLines = 0;
-
-        char line[MAX_QUESTION_LENGTH + MAX_ANSWER_LENGTH + MAX_ANSWER_LENGTH + 30];
-        while (fgets(line, sizeof(line), file)) {
-            strcpy(allLines[numLines], line);
-            numLines++;
-            for (int i = 0; i < 3; i++) {
-                fgets(line, sizeof(line), file);
-            }
-        }
-
-        fclose(file);
-
-        char correctAns[MAX_ANSWER_LENGTH];
-        snprintf(correctAns, MAX_ANSWER_LENGTH, "정답: %s", correctAnswer);
-        for (int i = 0; i < numLines; i += 4) {
-            if (strstr(allLines[i], question) != NULL &&
-                strstr(allLines[i + 1], correctAns) != NULL &&
-                strstr(allLines[i + 2], userAnswer) != NULL) {
-                alreadySaved = 1;
-                break;
-            }
-        }
-
-        if (alreadySaved) {
-            return;
-        }
-        else {
-            file = fopen(filename, "a");
-            if (file != NULL) {
-                fprintf(file, "문제: %s\n", question);
-                fprintf(file, "정답: %s\n", correctAnswer);
-                fprintf(file, "오답: %s\n", userAnswer);
-                fprintf(file, "------------------------\n");
-
-                fclose(file);
-            }
-            else {
-                printf("오답 노트 파일에 기록할 수 없습니다.\n");
-            }
-        }
-    }
-    else {
-        printf("파일을 열 수 없습니다.\n");
-    }
-}
-int CorrectAnswers() {
-    cls;
-    gotoxy(80, 10);
-    puts("@@@@@,,,....,,,@@@@@");
-    gotoxy(80, 11);
-    puts("@@@@............@@@@");
-    gotoxy(80, 12);
-    puts("@@@..............@@@");
-    gotoxy(80, 13);
-    puts("@@......,,,,......@@");
-    gotoxy(80, 14);
-    puts("@.....@@@@@@@@.....@");
-    gotoxy(80, 15);
-    puts(",....@@@@@@@@@@....,");
-    gotoxy(80, 16);
-    puts(",...@@@@@@@@@@@@...,");
-    gotoxy(80, 17);
-    puts(",...@@@@@@@@@@@@...,");
-    gotoxy(80, 18);
-    puts("...,@@@@@@@@@@@@,...");
-    gotoxy(80, 19);
-    puts("...,@@@@@@@@@@@@,...");
-    gotoxy(80, 20);
-    puts("...,@@@@@@@@@@@@,...");
-    gotoxy(80, 21);
-    puts("...,@@@@@@@@@@@@,...");
-    gotoxy(80, 22);
-    puts(",...@@@@@@@@@@@@...,");
-    gotoxy(80, 23);
-    puts(",...@@@@@@@@@@@@...,");
-    gotoxy(80, 24);
-    puts(",....@@@@@@@@@@....,");
-    gotoxy(80, 25);
-    puts("@.....@@@@@@@@.....@");
-    gotoxy(80, 26);
-    puts("@@......,,,,......@@");
-    gotoxy(80, 27);
-    puts("@@@..............@@@");
-    gotoxy(80, 28);
-    puts("@@@@............@@@@");
-    gotoxy(80, 29);
-    puts("@@@@@,,,....,,,@@@@@");
-}
-int WrongAnswers() {
-    cls;
-    gotoxy(80, 10);
-    puts("@@@@@@@@@@@@@@@@@@@@");
-    gotoxy(80, 11);
-    puts("@@@@@@@@@@@@@@@@@@@@");
-    gotoxy(80, 12);
-    puts("@     @@@@@@@@     @");
-    gotoxy(80, 13);
-    puts("@      @@@@@@      @");
-    gotoxy(80, 14);
-    puts("@       @@@@       @");
-    gotoxy(80, 15);
-    puts("@@       @@       @@");
-    gotoxy(80, 16);
-    puts("@@@              @@@");
-    gotoxy(80, 17);
-    puts("@@@@            @@@@");
-    gotoxy(80, 18);
-    puts("@@@@@          @@@@@");
-    gotoxy(80, 19);
-    puts("@@@@@@        @@@@@@");
-    gotoxy(80, 20);
-    puts("@@@@@@        @@@@@@");
-    gotoxy(80, 21);
-    puts("@@@@@          @@@@@");
-    gotoxy(80, 22);
-    puts("@@@@            @@@@");
-    gotoxy(80, 23);
-    puts("@@@              @@@");
-    gotoxy(80, 24);
-    puts("@@       @@       @@");
-    gotoxy(80, 25);
-    puts("@       @@@@       @");
-    gotoxy(80, 26);
-    puts("@      @@@@@@      @");
-    gotoxy(80, 27);
-    puts("@     @@@@@@@@     @");
-    gotoxy(80, 28);
-    puts("@    @@@@@@@@@@    @");
-    gotoxy(80, 29);
-    puts("@@@@@@@@@@@@@@@@@@@@");
-    gotoxy(80, 30);
-}
+*/
