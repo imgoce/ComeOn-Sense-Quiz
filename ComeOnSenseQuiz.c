@@ -352,6 +352,18 @@ int mainDraw(struct Member loginUser) {
         }
    }
 }
+int level() {
+    cls;
+    int x = 90;
+    int y = 20;
+    gotoxy(x - 2, y);
+    printf("> Easy");
+    gotoxy(x, y+3);
+    printf("Normal");
+    gotoxy(x, y + 6);
+    printf("Hard");
+    
+}
 
 /*int main() {
     FILE* file;
