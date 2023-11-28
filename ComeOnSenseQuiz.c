@@ -409,8 +409,8 @@ void shuffleArray(int arr[], int n) {
         arr[j] = temp;
     }
 }
-
-/*int main() {
+int questions() {
+    cls;
     FILE* file;
     char line[MAX_LINE_LENGTH];
     int* questionOrder;
@@ -474,4 +474,4 @@ void shuffleArray(int arr[], int n) {
     free(questionOrder);
 
     return 0;
-} */
+}
