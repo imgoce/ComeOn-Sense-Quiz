@@ -30,7 +30,7 @@ void loadUserInfo(struct Member loginUser);
 int mainDraw(struct Member loginUser);
 int level();
 void shuffleArray(int, int);
-int questions();
+int questions(const char* fileName);
 
 /* 구조체 선언 */
 struct Member{
@@ -409,7 +409,7 @@ void shuffleArray(int arr[], int n) {
         arr[j] = temp;
     }
 }
-int questions() {
+int questions(const char* fileName) {
     cls;
     FILE* file;
     char line[MAX_LINE_LENGTH];
@@ -417,7 +417,7 @@ int questions() {
     int numQuestions = 0;
 
     // Count the number of questions in the file
-    file = fopen("questions.txt", "r");
+    file = fopen(fileName, "r");
     if (file == NULL) {
         perror("Error opening file");
         return 1;
@@ -445,7 +445,7 @@ int questions() {
     shuffleArray(questionOrder, numQuestions);
 
     // Read and print the questions in the randomized order
-    file = fopen("questions.txt", "r");
+    file = fopen(fileName, "r");
     if (file == NULL) {
         perror("Error opening file");
         return 1;
