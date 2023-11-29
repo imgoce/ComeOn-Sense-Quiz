@@ -530,3 +530,137 @@ int questions(const char* fileName) {
 
     return 0;
 }
+
+/*question.txt 파일의 문제를 랜덤으로 출력 후 answer.txt 파일에 있는 답과 비교 후 정답/오답 출력, 오답인 문제는 wrong_answers.txt에 저장
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#define MAX_QUESTION_LENGTH 256
+#define MAX_ANSWER_LENGTH 64
+#define MAX_QUESTIONS 100
+#define MAX_WRONG_ANSWERS 100
+
+void readQuestionAndAnswer(char *questionFilename, char *answerFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], int *numQuestions);
+int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]);
+void saveWrongAnswer(char *filename, char question[MAX_QUESTION_LENGTH], char correctAnswer[MAX_ANSWER_LENGTH], char userAnswer[MAX_ANSWER_LENGTH]);
+
+int main() {
+    char questionFilename[] = "question.txt";
+    char answerFilename[] = "answer.txt";
+    char wrongAnswersFilename[] = "wrong_answers.txt";
+
+    char questions[MAX_QUESTIONS][MAX_QUESTION_LENGTH];
+    char answers[MAX_QUESTIONS][MAX_ANSWER_LENGTH];
+    int numQuestions = 0;
+
+    readQuestionAndAnswer(questionFilename, answerFilename, questions, answers, &numQuestions);
+
+    if (numQuestions == 0) {
+        printf("문제 파일 또는 정답 파일을 읽을 수 없습니다.\n");
+        return 1;
+    }
+
+    srand(time(NULL)); // 시간을 기반으로 난수 생성기 초기화
+
+    char userAnswer[MAX_ANSWER_LENGTH];
+    char exitInput[MAX_ANSWER_LENGTH] = "q";
+
+    int *questionOrder = (int *)malloc(numQuestions * sizeof(int));
+    if (questionOrder == NULL) {
+        printf("메모리 할당 오류\n");
+        return 1;
+    }
+
+    // 문제 순서 초기화
+    for (int i = 0; i < numQuestions; i++) {
+        questionOrder[i] = i;
+    }
+
+    FILE *wrongAnswersFile = fopen(wrongAnswersFilename, "a");
+    if (wrongAnswersFile == NULL) {
+        printf("오답 노트 파일을 열 수 없습니다.\n");
+        return 1;
+    }
+
+    for (int i = 0; i < numQuestions; i++) {
+        // 현재 남은 문제 중 랜덤으로 문제 선택
+        int randomIndex = i + rand() % (numQuestions - i);
+
+        // 선택한 문제와 현재 위치의 문제 교환
+        int temp = questionOrder[i];
+        questionOrder[i] = questionOrder[randomIndex];
+        questionOrder[randomIndex] = temp;
+
+        int currentQuestionIndex = questionOrder[i];
+
+        printf("문제: %s\n", questions[currentQuestionIndex]);
+
+        printf("답을 입력하세요 (종료하려면 'q' 입력): ");
+        scanf("%s", userAnswer);
+
+        if (strcmp(userAnswer, exitInput) == 0) {
+            printf("프로그램을 종료합니다.\n");
+            break;
+        }
+
+        if (checkAnswer(currentQuestionIndex, userAnswer, answers)) {
+            printf("정답!\n");
+        } else {
+            printf("오답! 정답은 %s 입니다.\n", answers[currentQuestionIndex]);
+            // 오답 노트에 기록
+            saveWrongAnswer(wrongAnswersFilename, questions[currentQuestionIndex], answers[currentQuestionIndex], userAnswer);
+        }
+
+        // 사용자 입력 버퍼 비우기
+        while (getchar() != '\n');
+    }
+
+    fclose(wrongAnswersFile);
+    free(questionOrder); // 동적 할당된 메모리 해제
+
+    return 0;
+}
+
+void readQuestionAndAnswer(char *questionFilename, char *answerFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], int *numQuestions) {
+    FILE *questionFile = fopen(questionFilename, "r");
+    FILE *answerFile = fopen(answerFilename, "r");
+
+    if (questionFile == NULL || answerFile == NULL) {
+        *numQuestions = 0;
+        return;
+    }
+
+    *numQuestions = 0;
+    while (fgets(questions[*numQuestions], MAX_QUESTION_LENGTH, questionFile) != NULL && fgets(answers[*numQuestions], MAX_ANSWER_LENGTH, answerFile) != NULL) {
+        // 개행 문자 제거
+        questions[*numQuestions][strcspn(questions[*numQuestions], "\n")] = 0;
+        answers[*numQuestions][strcspn(answers[*numQuestions], "\n")] = 0;
+
+        (*numQuestions)++;
+    }
+
+    fclose(questionFile);
+    fclose(answerFile);
+}
+
+int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]) {
+    return strcmp(userAnswer, answers[questionIndex]) == 0;
+}
+
+void saveWrongAnswer(char *filename, char question[MAX_QUESTION_LENGTH], char correctAnswer[MAX_ANSWER_LENGTH], char userAnswer[MAX_ANSWER_LENGTH]) {
+    FILE *file = fopen(filename, "a");
+
+    if (file != NULL) {
+        fprintf(file, "문제: %s\n", question);
+        fprintf(file, "정답: %s\n", correctAnswer);
+        fprintf(file, "오답: %s\n", userAnswer);
+        fprintf(file, "------------------------\n");
+
+        fclose(file);
+    } else {
+        printf("오답 노트 파일에 기록할 수 없습니다.\n");
+    }
+}
+*/
