@@ -561,3 +561,23 @@ int questions(struct Member loginUser, const char* fileName, const char* fileNam
     free(wrongAnswersFilename);
     return 0;
 }
+void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], int* numQuestions) {
+    FILE* questionFile = fopen(questionFilename, "r");
+    FILE* answerFile = fopen(answerFilename, "r");
+
+    if (questionFile == NULL || answerFile == NULL) {
+        *numQuestions = 0;
+        return;
+    }
+
+    *numQuestions = 0;
+    while (fgets(questions[*numQuestions], MAX_QUESTION_LENGTH, questionFile) != NULL && fgets(answers[*numQuestions], MAX_ANSWER_LENGTH, answerFile) != NULL) {
+        questions[*numQuestions][strcspn(questions[*numQuestions], "\n")] = 0;
+        answers[*numQuestions][strcspn(answers[*numQuestions], "\n")] = 0;
+
+        (*numQuestions)++;
+    }
+
+    fclose(questionFile);
+    fclose(answerFile);
+}
