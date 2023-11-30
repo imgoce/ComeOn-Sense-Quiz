@@ -584,3 +584,13 @@ void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char qu
 int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]) {
     return strcmp(userAnswer, answers[questionIndex]) == 0;
 }
+char* generateWrongAnswersFilename(const char* username) {
+    char* filename = (char*)malloc(MAX_FILE_NAME_LENGTH * sizeof(char));
+    if (filename == NULL) {
+        printf("메모리 할당 오류\n");
+        return NULL;
+    }
+    snprintf(filename, MAX_FILE_NAME_LENGTH, "%s_wrong_answers.txt", username);
+
+    return filename;
+}
