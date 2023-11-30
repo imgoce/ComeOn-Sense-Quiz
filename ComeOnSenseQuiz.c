@@ -17,20 +17,25 @@
 #define MAX_LINE_LENGTH 100
 
 /* 함수 선언 */
-void init();
-void setcolor(int, int);
-void titleDraw();
-void gotoxy(int, int);
-int keyControl();
-int menuDraw();
-void signup();
-struct Member login();
-int isUsernameExists(const char* username);
-void loadUserInfo(struct Member loginUser);
-int mainDraw(struct Member loginUser);
-int level();
-void shuffleArray(int, int);
-int questions(const char* fileName);
+void init(); //크기 설정
+void setcolor(int, int); //색상 설정
+void titleDraw(); //제목 설정
+void gotoxy(int, int); //좌표 이동
+int keyControl(); //키 조작 설정
+int menuDraw(); //초기 화면
+void signup(); //회원가입
+struct Member login(); //로그인
+int isUsernameExists(const char* username); //사용자가 존재하는 지 판단
+void loadUserInfo(struct Member loginUser); //사용자 정보
+int mainDraw(struct Member loginUser); //메인 화면
+int level(); //난이도 선택
+void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], int* numQuestions); //문제를 파일에서 불러옴
+int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]); //정답인지 확인
+void saveWrongAnswer(char* filename, char question[MAX_QUESTION_LENGTH], char correctAnswer[MAX_ANSWER_LENGTH], char userAnswer[MAX_ANSWER_LENGTH]); //오답노트 저장
+int questions(struct Member loginUser, const char* fileName, const char* fileName2, const char* username); //문제 출력
+char* generateWrongAnswersFilename(const char* username); //오답노트 파일 이름 생성
+int CorrectAnswers(); //정답
+int WrongAnswers(); //오답
 
 /* 구조체 선언 */
 struct Member{
