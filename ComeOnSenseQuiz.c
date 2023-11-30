@@ -470,77 +470,94 @@ int level() {
         }
     }
 }
-void shuffleArray(int arr[], int n) {
-    for (int i = n - 1; i > 0; i--) {
-        int j = rand() % (i + 1);
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-    }
-}
-int questions(const char* fileName) {
+int questions(struct Member loginUser, const char* fileName, const char* fileName2, const char* username) {
     cls;
-    FILE* file;
-    char line[MAX_LINE_LENGTH];
-    int* questionOrder;
+    char questionFilename[MAX_FILE_NAME_LENGTH];
+    char answerFilename[MAX_FILE_NAME_LENGTH];
+    strcpy(questionFilename, fileName);
+    strcpy(answerFilename, fileName2);
+    struct Member loggedInUser;
+    loggedInUser = loginUser;
+    char* wrongAnswersFilename = generateWrongAnswersFilename(loggedInUser.username);
+
+    char formattedWrongAnswersFilename[MAX_FILE_NAME_LENGTH];
+    snprintf(formattedWrongAnswersFilename, MAX_FILE_NAME_LENGTH, "%s_wrong_answers.txt", username);
+
+    char questions[MAX_QUESTIONS][MAX_QUESTION_LENGTH];
+    char answers[MAX_QUESTIONS][MAX_ANSWER_LENGTH];
     int numQuestions = 0;
 
-    // Count the number of questions in the file
-    file = fopen(fileName, "r");
-    if (file == NULL) {
-        perror("Error opening file");
-        return 1;
-    }
+    while (1) {
+        readQuestionAndAnswer(questionFilename, answerFilename, questions, answers, &numQuestions);
 
-    while (fgets(line, MAX_LINE_LENGTH, file) != NULL) {
-        numQuestions++;
-    }
-
-    fclose(file);
-
-    // Create an array to store the order in which questions will be asked
-    questionOrder = (int*)malloc(numQuestions * sizeof(int));
-    if (questionOrder == NULL) {
-        perror("Error allocating memory");
-        return 1;
-    }
-
-    for (int i = 0; i < numQuestions; i++) {
-        questionOrder[i] = i;
-    }
-
-    // Shuffle the array to randomize the order of questions
-    srand((unsigned int)time(NULL));
-    shuffleArray(questionOrder, numQuestions);
-
-    // Read and print the questions in the randomized order
-    file = fopen(fileName, "r");
-    if (file == NULL) {
-        perror("Error opening file");
-        return 1;
-    }
-
-    for (int i = 0; i < numQuestions; i++) {
-        int questionIndex = questionOrder[i];
-
-        fseek(file, 0, SEEK_SET);  // Move the file pointer to the beginning
-
-        for (int j = 0; j <= questionIndex; j++) {
-            if (fgets(line, MAX_LINE_LENGTH, file) == NULL) {
-                perror("Error reading file");
-                return 1;
-            }
+        if (numQuestions == 0) {
+            printf("문제 파일 또는 정답 파일을 읽을 수 없습니다.\n");
+            return 1;
         }
 
-        printf("Question %d: %s\n", i + 1, line);
+        srand(time(NULL));
 
-        // Wait for the user to press Enter before showing the next question
-        printf("Press Enter for the next question...\n");
-        getchar();
+        char userAnswer[MAX_ANSWER_LENGTH];
+        char exitInput[MAX_ANSWER_LENGTH] = "q";
+
+        int* questionOrder = (int*)malloc(numQuestions * sizeof(int));
+        if (questionOrder == NULL) {
+            printf("메모리 할당 오류\n");
+            return 1;
+        }
+
+        for (int i = 0; i < numQuestions; i++) {
+            questionOrder[i] = i;
+        }
+
+        FILE* wrongAnswersFile = fopen(wrongAnswersFilename, "a");
+        if (wrongAnswersFile == NULL) {
+            printf("오답 노트 파일을 열 수 없습니다.\n");
+            return 1;
+        }
+
+        for (int i = 0; i < numQuestions; i++) {
+            int randomIndex = i + rand() % (numQuestions - i);
+
+            int temp = questionOrder[i];
+            questionOrder[i] = questionOrder[randomIndex];
+            questionOrder[randomIndex] = temp;
+
+            int currentQuestionIndex = questionOrder[i];
+
+            gotoxy(50, 15);
+            printf("문제: %s\n", questions[currentQuestionIndex]);
+
+            gotoxy(80, 35);
+            printf("답 (종료하려면 'q' 입력): ");
+            scanf("%s", userAnswer);
+
+            if (strcmp(userAnswer, exitInput) == 0) {
+                printf("프로그램을 종료합니다.\n");
+                Sleep(1000);
+                cls;
+                break;
+            }
+
+            if (checkAnswer(currentQuestionIndex, userAnswer, answers)) {
+                CorrectAnswers();
+                Sleep(1000);
+                cls;
+            }
+            else {
+                WrongAnswers();
+                saveWrongAnswer(wrongAnswersFilename, questions[currentQuestionIndex], answers[currentQuestionIndex], userAnswer);
+                Sleep(1000);
+                cls;
+            }
+
+            while (getchar() != '\n');
+        }
+        fclose(wrongAnswersFile);
+        free(questionOrder);
+        break;
     }
 
-    fclose(file);
-    free(questionOrder);
-
+    free(wrongAnswersFilename);
     return 0;
 }
