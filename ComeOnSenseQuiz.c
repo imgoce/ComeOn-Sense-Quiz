@@ -581,3 +581,6 @@ void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char qu
     fclose(questionFile);
     fclose(answerFile);
 }
+int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]) {
+    return strcmp(userAnswer, answers[questionIndex]) == 0;
+}
