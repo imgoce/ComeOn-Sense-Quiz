@@ -643,6 +643,181 @@ struct Result questions(struct Member loginUser, const char* fileName, const cha
     free(wrongAnswersFilename);
     return result;
 }
+void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], int* numQuestions) {
+    FILE* questionFile = fopen(questionFilename, "r");
+    FILE* answerFile = fopen(answerFilename, "r");
+
+    if (questionFile == NULL || answerFile == NULL) {
+        *numQuestions = 0;
+        return;
+    }
+
+    *numQuestions = 0;
+    while (fgets(questions[*numQuestions], MAX_QUESTION_LENGTH, questionFile) != NULL &&
+        fgets(answers[*numQuestions], MAX_ANSWER_LENGTH, answerFile) != NULL) {
+        questions[*numQuestions][strcspn(questions[*numQuestions], "\n")] = 0;
+        answers[*numQuestions][strcspn(answers[*numQuestions], "\n")] = 0;
+
+        (*numQuestions)++;
+    }
+
+    fclose(questionFile);
+    fclose(answerFile);
+}
+
+int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]) {
+    return strcmp(userAnswer, answers[questionIndex]) == 0;
+}
+char* generateWrongAnswersFilename(const char* username) {
+    char* filename = (char*)malloc(MAX_FILE_NAME_LENGTH * sizeof(char));
+    if (filename == NULL) {
+        printf("메모리 할당 오류\n");
+        return NULL;
+    }
+    snprintf(filename, MAX_FILE_NAME_LENGTH, "%s_wrong_answers.txt", username);
+
+    return filename;
+}
+void saveWrongAnswer(char* filename, char question[MAX_QUESTION_LENGTH], char correctAnswer[MAX_ANSWER_LENGTH], char userAnswer[MAX_ANSWER_LENGTH]) {
+    FILE* file = fopen(filename, "r");
+    int alreadySaved = 0;
+
+    if (file != NULL) {
+        char allLines[MAX_QUESTIONS][MAX_QUESTION_LENGTH + MAX_ANSWER_LENGTH + MAX_ANSWER_LENGTH + 30]; // 모든 줄을 저장할 배열
+        int numLines = 0;
+
+        char line[MAX_QUESTION_LENGTH + MAX_ANSWER_LENGTH + MAX_ANSWER_LENGTH + 30];
+        while (fgets(line, sizeof(line), file)) {
+            strcpy(allLines[numLines], line);
+            numLines++;
+            for (int i = 0; i < 3; i++) {
+                fgets(line, sizeof(line), file);
+            }
+        }
+
+        fclose(file);
+
+        char correctAns[MAX_ANSWER_LENGTH];
+        snprintf(correctAns, MAX_ANSWER_LENGTH, "정답: %s", correctAnswer);
+
+        for (int i = 0; i < numLines; i += 4) {
+            if (strstr(allLines[i], question) != NULL &&
+                strstr(allLines[i + 1], correctAns) != NULL &&
+                strstr(allLines[i + 2], userAnswer) != NULL) {
+                alreadySaved = 1;
+                break;
+            }
+        }
+
+        if (alreadySaved) {
+            return;
+        }
+        else {
+            file = fopen(filename, "a");
+            if (file != NULL) {
+                fprintf(file, "문제: %s\n", question);
+                fprintf(file, "정답: %s\n", correctAnswer);
+                fprintf(file, "오답: %s\n", userAnswer);
+                fprintf(file, "------------------------\n");
+
+                fclose(file);
+            }
+            else {
+                printf("오답 노트 파일에 기록할 수 없습니다.\n");
+            }
+        }
+    }
+    else {
+        printf("파일을 열 수 없습니다.\n");
+    }
+}
+int CorrectAnswers() {
+    cls;
+    gotoxy(80, 10);
+    puts("@@@@@,,,....,,,@@@@@");
+    gotoxy(80, 11);
+    puts("@@@@............@@@@");
+    gotoxy(80, 12);
+    puts("@@@..............@@@");
+    gotoxy(80, 13);
+    puts("@@......,,,,......@@");
+    gotoxy(80, 14);
+    puts("@.....@@@@@@@@.....@");
+    gotoxy(80, 15);
+    puts(",....@@@@@@@@@@....,");
+    gotoxy(80, 16);
+    puts(",...@@@@@@@@@@@@...,");
+    gotoxy(80, 17);
+    puts(",...@@@@@@@@@@@@...,");
+    gotoxy(80, 18);
+    puts("...,@@@@@@@@@@@@,...");
+    gotoxy(80, 19);
+    puts("...,@@@@@@@@@@@@,...");
+    gotoxy(80, 20);
+    puts("...,@@@@@@@@@@@@,...");
+    gotoxy(80, 21);
+    puts("...,@@@@@@@@@@@@,...");
+    gotoxy(80, 22);
+    puts(",...@@@@@@@@@@@@...,");
+    gotoxy(80, 23);
+    puts(",...@@@@@@@@@@@@...,");
+    gotoxy(80, 24);
+    puts(",....@@@@@@@@@@....,");
+    gotoxy(80, 25);
+    puts("@.....@@@@@@@@.....@");
+    gotoxy(80, 26);
+    puts("@@......,,,,......@@");
+    gotoxy(80, 27);
+    puts("@@@..............@@@");
+    gotoxy(80, 28);
+    puts("@@@@............@@@@");
+    gotoxy(80, 29);
+    puts("@@@@@,,,....,,,@@@@@");
+}
+int WrongAnswers() {
+    cls;
+    gotoxy(80, 10);
+    puts("@@@@@@@@@@@@@@@@@@@@");
+    gotoxy(80, 11);
+    puts("@@@@@@@@@@@@@@@@@@@@");
+    gotoxy(80, 12);
+    puts("@     @@@@@@@@     @");
+    gotoxy(80, 13);
+    puts("@      @@@@@@      @");
+    gotoxy(80, 14);
+    puts("@       @@@@       @");
+    gotoxy(80, 15);
+    puts("@@       @@       @@");
+    gotoxy(80, 16);
+    puts("@@@              @@@");
+    gotoxy(80, 17);
+    puts("@@@@            @@@@");
+    gotoxy(80, 18);
+    puts("@@@@@          @@@@@");
+    gotoxy(80, 19);
+    puts("@@@@@@        @@@@@@");
+    gotoxy(80, 20);
+    puts("@@@@@@        @@@@@@");
+    gotoxy(80, 21);
+    puts("@@@@@          @@@@@");
+    gotoxy(80, 22);
+    puts("@@@@            @@@@");
+    gotoxy(80, 23);
+    puts("@@@              @@@");
+    gotoxy(80, 24);
+    puts("@@       @@       @@");
+    gotoxy(80, 25);
+    puts("@       @@@@       @");
+    gotoxy(80, 26);
+    puts("@      @@@@@@      @");
+    gotoxy(80, 27);
+    puts("@     @@@@@@@@     @");
+    gotoxy(80, 28);
+    puts("@    @@@@@@@@@@    @");
+    gotoxy(80, 29);
+    puts("@@@@@@@@@@@@@@@@@@@@");
+    gotoxy(80, 30);
+}
 
 /* 힌트(h키) 기능 추가 후 전체 코드
 #define _CRT_SECURE_NO_WARNINGS
