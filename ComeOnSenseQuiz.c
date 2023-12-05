@@ -273,7 +273,13 @@ int menuDraw() {
     int x = 90;
     int y = 35;
     gotoxy(x - 2, y);
-    printf("★ ID 입력");
+
+    setcolor(3,0);
+    printf("★ ");
+    gotoxy(x, y);
+    setcolor(7,0);
+
+    printf("ID 입력");
     gotoxy(x, y + 1);
     printf("ID가 없을 경우");
     gotoxy(x, y + 2);
@@ -286,7 +292,11 @@ int menuDraw() {
                 gotoxy(x - 2, y);
                 printf(" ");
                 gotoxy(x - 2, --y);
+
+                setcolor(3,0);
                 printf("★");
+                setcolor(7,0);
+
             }
             break;
         }
@@ -295,7 +305,11 @@ int menuDraw() {
                 gotoxy(x - 2, y);
                 printf(" ");
                 gotoxy(x - 2, ++y);
+
+                setcolor(3,0);
                 printf("★");
+                setcolor(7,0);
+
             }
             break;
         }
@@ -463,7 +477,13 @@ int mainDraw(struct Member loginUser) {
     printf("리더 보드");
 
     gotoxy(x - 2, y);
-    printf("★ 시사");
+
+    setcolor(3,0);
+    printf("★ ");
+    gotoxy(x, y);
+    setcolor(7,0);
+
+    printf("시사");
     gotoxy(x + 25, y);
     printf("국가");
     gotoxy(x + 50, y);
@@ -484,7 +504,10 @@ int mainDraw(struct Member loginUser) {
                 printf(" ");
                 x = x + 25;
                 gotoxy(x - 2, y);
+
+                setcolor(3,0);
                 printf("★");
+                setcolor(7,0);
             }
             break;
         }
@@ -494,7 +517,11 @@ int mainDraw(struct Member loginUser) {
                 printf(" ");
                 x = x - 25;
                 gotoxy(x - 2, y);
+
+                setcolor(3,0);
                 printf("★");
+                setcolor(7,0);
+
             }
             break;
         }
@@ -509,7 +536,13 @@ int level() {
     int x = 90;
     int y = 20;
     gotoxy(x - 2, y);
-    printf("★ Easy");
+
+    setcolor(3,0);
+    printf("★ ");
+    gotoxy(x, y);
+    setcolor(7,0);
+
+    printf("Easy");
     gotoxy(x, y+3);
     printf("Normal");
     gotoxy(x, y + 6);
@@ -523,7 +556,12 @@ int level() {
                 printf(" ");
                 y = y - 3;
                 gotoxy(x - 2, y);
+                
+                setcolor(3,0);
                 printf("★");
+                setcolor(7,0);
+
+
             }
             break;
         }
@@ -533,7 +571,11 @@ int level() {
                 printf(" ");
                 y = y + 3;
                 gotoxy(x - 2, y);
+
+                setcolor(3,0);
                 printf("★");
+                setcolor(7,0);
+
             }
             break;
         }
@@ -870,7 +912,13 @@ int printResult(struct Result result, struct Member loginUser) {
     printf("오답 수: %d\n", result.wrongCount);
     gotoxy(x - 2, y);
 
-    printf("★ 오답노트");
+    setcolor(3,0);
+    printf("★ ");
+    gotoxy(x, y);
+    setcolor(7,0);
+
+
+    printf("오답노트");
     gotoxy(180, y);
     printf("->");
     while (1) {
@@ -882,7 +930,11 @@ int printResult(struct Result result, struct Member loginUser) {
                 printf(" ");
                 x = x + 170;
                 gotoxy(x - 2, y);
+
+                setcolor(3,0);
                 printf("★");
+                setcolor(7,0);
+
             }
             break;
         }
@@ -892,7 +944,10 @@ int printResult(struct Result result, struct Member loginUser) {
                 printf(" ");
                 x = x - 170;
                 gotoxy(x - 2, y);
+               
+                setcolor(3,0);
                 printf("★");
+                setcolor(7,0);
             }
             break;
         }
