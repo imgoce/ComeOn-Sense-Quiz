@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 /* 헤더 선언 */
 #include <stdio.h>
 #include <windows.h>
