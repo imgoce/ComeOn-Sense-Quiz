@@ -535,7 +535,114 @@ int level() {
         }
     }
 }
+struct Result questions(struct Member loginUser, const char* fileName, const char* fileName2, const char* fileName3, const char* username) {
+    cls;
+    struct Result result = { 0 };
+    char questionFilename[MAX_FILE_NAME_LENGTH];
+    char answerFilename[MAX_FILE_NAME_LENGTH];
+    char hintFilename[MAX_FILE_NAME_LENGTH];
+    strcpy(questionFilename, fileName);
+    strcpy(answerFilename, fileName2);
+    strcpy(hintFilename, fileName3);
+    struct Member loggedInUser;
+    loggedInUser = loginUser;
+    char* wrongAnswersFilename = generateWrongAnswersFilename(loggedInUser.username);
 
+    char formattedWrongAnswersFilename[MAX_FILE_NAME_LENGTH];
+    snprintf(formattedWrongAnswersFilename, MAX_FILE_NAME_LENGTH, "%s_wrong_answers.txt", username);
+
+    char questions[MAX_QUESTIONS][MAX_QUESTION_LENGTH];
+    char answers[MAX_QUESTIONS][MAX_ANSWER_LENGTH];
+    char hints[MAX_QUESTIONS][MAX_HINT_LENGTH];
+    int numQuestions = 0;
+
+    while (1) {
+        readQuestionAndAnswer(questionFilename, answerFilename, questions, answers, &numQuestions);
+
+        if (numQuestions == 0) {
+            gotoxy(80, 25);
+            printf("문제 파일 또는 정답 파일을 읽을 수 없습니다.\n");
+            result.isError = 1;
+            return result;
+        }
+
+        srand(time(NULL));
+
+        char userAnswer[MAX_ANSWER_LENGTH];
+        char exitInput[MAX_ANSWER_LENGTH] = "q";
+        char HintInput[MAX_ANSWER_LENGTH] = "h";
+
+        int* questionOrder = (int*)malloc(numQuestions * sizeof(int));
+        if (questionOrder == NULL) {
+            gotoxy(80, 25);
+            printf("메모리 할당 오류\n");
+            result.isError = 1;
+            return result;
+        }
+
+        for (int i = 0; i < numQuestions; i++) {
+            questionOrder[i] = i;
+        }
+
+        FILE* wrongAnswersFile = fopen(wrongAnswersFilename, "a");
+        if (wrongAnswersFile == NULL) {
+            gotoxy(80, 25);
+            printf("오답 노트 파일을 열 수 없습니다.\n");
+            result.isError = 1;
+            return result;
+        }
+
+        for (int i = 0; i < numQuestions; i++) {
+            int randomIndex = i + rand() % (numQuestions - i);
+
+            int temp = questionOrder[i];
+            questionOrder[i] = questionOrder[randomIndex];
+            questionOrder[randomIndex] = temp;
+
+            int currentQuestionIndex = questionOrder[i];
+
+            gotoxy(175, 10);
+            printf("Hint (h 입력)");
+
+            gotoxy(50, 15);
+            printf("문제: %s\n", questions[currentQuestionIndex]);
+
+            gotoxy(80, 35);
+            printf("답 (종료하려면 'q' 입력): ");
+            scanf("%s", userAnswer);
+
+            if (strcmp(userAnswer, exitInput) == 0) {
+                gotoxy(80, 36);
+                printf("프로그램을 종료합니다.\n");
+                Sleep(1000);
+                cls;
+                break;
+            }
+
+            if (checkAnswer(currentQuestionIndex, userAnswer, answers)) {
+                CorrectAnswers();
+                result.correctCount++;
+                Sleep(1000);
+                cls;
+            }
+            else {
+                WrongAnswers();
+                result.wrongCount++;
+                saveWrongAnswer(wrongAnswersFilename, questions[currentQuestionIndex], answers[currentQuestionIndex], userAnswer);
+                Sleep(1000);
+                cls;
+            }
+
+            while (getchar() != '\n');
+        }
+        fclose(wrongAnswersFile);
+        free(questionOrder);
+        break;
+    }
+
+    free(wrongAnswersFilename);
+    return result;
+}
 
 /* 힌트(h키) 기능 추가 후 전체 코드
 #define _CRT_SECURE_NO_WARNINGS
