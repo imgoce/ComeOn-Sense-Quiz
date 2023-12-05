@@ -818,6 +818,82 @@ int WrongAnswers() {
     puts("@@@@@@@@@@@@@@@@@@@@");
     gotoxy(80, 30);
 }
+int printResult(struct Result result, struct Member loginUser) {
+    float totalQuestions = result.correctCount + result.wrongCount;
+    float wrongPercentage = (result.wrongCount / totalQuestions) * 100;
+
+    gotoxy(90, 10);
+    if (result.correctCount == totalQuestions) {
+        printf("등급: S\n");
+        strncpy(result.grade, "S", MAX_GRADE_LENGTH);
+        result.grade[MAX_GRADE_LENGTH] = '\0';
+    }
+    else if (wrongPercentage <= 20) {
+        printf("등급: A\n");
+        strncpy(result.grade, "A", MAX_GRADE_LENGTH);
+        result.grade[MAX_GRADE_LENGTH] = '\0';
+    }
+    else if (wrongPercentage <= 40) {
+        printf("등급: B\n");
+        strncpy(result.grade, "B", MAX_GRADE_LENGTH);
+        result.grade[MAX_GRADE_LENGTH] = '\0';
+    }
+    else if (wrongPercentage <= 60) {
+        printf("등급: C\n");
+        strncpy(result.grade, "C", MAX_GRADE_LENGTH);
+        result.grade[MAX_GRADE_LENGTH] = '\0';
+    }
+    else if (wrongPercentage <= 80) {
+        printf("등급: D\n");
+        strncpy(result.grade, "D", MAX_GRADE_LENGTH);
+        result.grade[MAX_GRADE_LENGTH] = '\0';
+    }
+    else {
+        printf("등급: E\n");
+        strncpy(result.grade, "E", MAX_GRADE_LENGTH);
+        result.grade[MAX_GRADE_LENGTH] = '\0';
+    }
+
+    int x = 10;
+    int y = 45;
+    gotoxy(88, 30);
+    printf("정답 수: %d\n", result.correctCount);
+    gotoxy(88, 31);
+    printf("오답 수: %d\n", result.wrongCount);
+    gotoxy(x - 2, y);
+
+    printf("> 오답노트");
+    gotoxy(180, y);
+    printf("->");
+    while (1) {
+        int n = keyControl();
+        switch (n) {
+        case RIGHT: {
+            if (x > 8 && x < 180) {
+                gotoxy(x - 2, y);
+                printf(" ");
+                x = x + 170;
+                gotoxy(x - 2, y);
+                printf(">");
+            }
+            break;
+        }
+        case LEFT: {
+            if (x < 182 && x > 10) {
+                gotoxy(x - 2, y);
+                printf(" ");
+                x = x - 170;
+                gotoxy(x - 2, y);
+                printf(">");
+            }
+            break;
+        }
+        case SUBMIT: {
+            return x - 7;
+        }
+        }
+    }
+}
 
 /* 힌트(h키) 기능 추가 후 전체 코드
 #define _CRT_SECURE_NO_WARNINGS
