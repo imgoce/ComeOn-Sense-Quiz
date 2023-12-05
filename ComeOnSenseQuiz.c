@@ -1616,3 +1616,242 @@ int isAlreadyRecorded(char* filename, char question[MAX_QUESTION_LENGTH]) {
 }
 
 */
+
+/* 다지선다(객관식) 문제 출력 코드
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <stdbool.h>
+
+#define MAX_QUESTION_LENGTH 256
+#define MAX_ANSWER_LENGTH 64
+#define MAX_HINT_LENGTH 256
+#define MAX_QUESTIONS 100
+#define MAX_NUMBERS 400 // 100 questions * 4 numbers
+
+void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char* hintFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], char hints[][MAX_HINT_LENGTH], int* numQuestions);
+void checkAnswerAndPrintResult(int currentQuestionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH], char wrongAnswersFilename[], char questions[][MAX_QUESTION_LENGTH]);
+void displayHint(char hints[][MAX_HINT_LENGTH], int currentQuestionIndex);
+void readNumbers(char* filename, char numbers[][MAX_QUESTION_LENGTH], int* numNumbers);
+void printNumbers(char numbers[][MAX_QUESTION_LENGTH], int start, int end);
+bool checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]) {
+    return strcmp(userAnswer, answers[questionIndex]) == 0;
+}
+
+int main() {
+    char questionFilename[] = "question.txt";
+    char answerFilename[] = "answer.txt";
+    char hintFilename[] = "hint.txt";
+    char wrongAnswersFilename[] = "wrong_answers.txt";
+    char numberFilename[] = "number.txt";
+
+    char questions[MAX_QUESTIONS][MAX_QUESTION_LENGTH];
+    char answers[MAX_QUESTIONS][MAX_ANSWER_LENGTH];
+    char hints[MAX_QUESTIONS][MAX_HINT_LENGTH];
+    char numbers[MAX_NUMBERS][MAX_QUESTION_LENGTH];
+    int numQuestions = 0;
+    int numNumbers = 0;
+
+    readQuestionAndAnswer(questionFilename, answerFilename, hintFilename, questions, answers, hints, &numQuestions);
+    readNumbers(numberFilename, numbers, &numNumbers);
+
+    if (numQuestions == 0 || numNumbers == 0) {
+        printf("문제 파일, 정답 파일, 힌트 파일 또는 숫자 파일을 읽을 수 없습니다.\n");
+        return 1;
+    }
+
+    srand(time(NULL));
+
+    char userAnswer[MAX_ANSWER_LENGTH];
+    char exitInput[MAX_ANSWER_LENGTH] = "q";
+    char hintInput[MAX_ANSWER_LENGTH] = "h";
+
+    int* questionOrder = (int*)malloc(numQuestions * sizeof(int));
+    if (questionOrder == NULL) {
+        printf("메모리 할당 오류\n");
+        return 1;
+    }
+
+    FILE* wrongAnswersFile = fopen(wrongAnswersFilename, "a");
+    if (wrongAnswersFile == NULL) {
+        printf("오답 노트 파일을 열 수 없습니다.\n");
+        free(questionOrder);
+        return 1;
+    }
+
+    for (int i = 0; i < numQuestions; i++) {
+        questionOrder[i] = i;
+    }
+
+    for (int i = 0; i < numQuestions; i++) {
+        int randomIndex = i + rand() % (numQuestions - i);
+        int temp = questionOrder[i];
+        questionOrder[i] = questionOrder[randomIndex];
+        questionOrder[randomIndex] = temp;
+
+        int currentQuestionIndex = questionOrder[i];
+
+        printf("문제: %s\n", questions[currentQuestionIndex]);
+
+        int start = 0;
+        int end = 0;
+
+        // 조건문을 추가하여 number.txt의 범위 설정
+        if (currentQuestionIndex == 0) {
+            start = 0;
+            end = 4;
+        }
+        else if (currentQuestionIndex == 1) {
+            start = 4;
+            end = 8;
+        }
+        else if (currentQuestionIndex == 2) {
+            start = 8;
+            end = 12;
+        }
+        else if (currentQuestionIndex == 3) {
+            start = 12;
+            end = 16;
+        }
+        else if (currentQuestionIndex == 4) {
+            start = 16;
+            end = 20;
+        }
+        else if (currentQuestionIndex == 5) {
+            start = 20;
+            end = 24;
+        }
+        else if (currentQuestionIndex == 6) {
+            start = 24;
+            end = 28;
+        }
+        else if (currentQuestionIndex == 7) {
+            start = 28;
+            end = 32;
+        }
+        else if (currentQuestionIndex == 8) {
+            start = 32;
+            end = 36;
+        }
+        else if (currentQuestionIndex == 9) {
+            start = 36;
+            end = 40;
+        }
+        else if (currentQuestionIndex == 10) {
+            start = 40;
+            end = 44;
+        }
+
+        printNumbers(numbers, start, end);
+
+        while (1) {
+            printf("답을 입력하세요 (종료하려면 'q' 입력, 힌트 보려면 'h' 입력): ");
+            scanf("%s", userAnswer);
+
+            if (strcmp(userAnswer, exitInput) == 0) {
+                printf("프로그램을 종료합니다.\n");
+                break;
+            }
+            else if (strcmp(userAnswer, hintInput) == 0) {
+                displayHint(hints, currentQuestionIndex);
+            }
+            else {
+                checkAnswerAndPrintResult(currentQuestionIndex, userAnswer, answers, wrongAnswersFilename, questions);
+                break;
+            }
+        }
+
+        while (getchar() != '\n');
+    }
+
+    fclose(wrongAnswersFile);
+    free(questionOrder);
+
+    return 0;
+}
+
+
+
+void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char* hintFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], char hints[][MAX_HINT_LENGTH], int* numQuestions) {
+    FILE* questionFile = fopen(questionFilename, "r");
+    FILE* answerFile = fopen(answerFilename, "r");
+    FILE* hintFile = fopen(hintFilename, "r");
+
+    if (questionFile == NULL || answerFile == NULL || hintFile == NULL) {
+        *numQuestions = 0;
+        return;
+    }
+
+    *numQuestions = 0;
+    while (*numQuestions < MAX_QUESTIONS &&
+        fgets(questions[*numQuestions], MAX_QUESTION_LENGTH, questionFile) != NULL &&
+        fgets(answers[*numQuestions], MAX_ANSWER_LENGTH, answerFile) != NULL &&
+        fgets(hints[*numQuestions], MAX_HINT_LENGTH, hintFile) != NULL) {
+        questions[*numQuestions][strcspn(questions[*numQuestions], "\n")] = 0;
+        answers[*numQuestions][strcspn(answers[*numQuestions], "\n")] = 0;
+        hints[*numQuestions][strcspn(hints[*numQuestions], "\n")] = 0;
+
+        (*numQuestions)++;
+    }
+
+    fclose(questionFile);
+    fclose(answerFile);
+    fclose(hintFile);
+}
+
+void saveWrongAnswer(char* filename, char question[MAX_QUESTION_LENGTH], char correctAnswer[MAX_ANSWER_LENGTH], char userAnswer[MAX_ANSWER_LENGTH]) {
+    FILE* file = fopen(filename, "a");
+
+    if (file != NULL) {
+        fprintf(file, "문제: %s\n", question);
+        fprintf(file, "정답: %s\n", correctAnswer);
+        fprintf(file, "오답: %s\n", userAnswer);
+        fprintf(file, "------------------------\n");
+
+        fclose(file);
+    }
+    else {
+        printf("오답 노트 파일에 기록할 수 없습니다.\n");
+    }
+}
+
+void checkAnswerAndPrintResult(int currentQuestionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH], char wrongAnswersFilename[], char questions[][MAX_QUESTION_LENGTH]) {
+    if (checkAnswer(currentQuestionIndex, userAnswer, answers)) {
+        printf("정답!\n");
+    }
+    else {
+        printf("오답! 정답은 %s 입니다.\n", answers[currentQuestionIndex]);
+        saveWrongAnswer(wrongAnswersFilename, questions[currentQuestionIndex], answers[currentQuestionIndex], userAnswer);
+    }
+}
+
+void displayHint(char hints[][MAX_HINT_LENGTH], int currentQuestionIndex) {
+    printf("힌트: %s\n", hints[currentQuestionIndex]);
+}
+
+void readNumbers(char* filename, char numbers[][MAX_QUESTION_LENGTH], int* numNumbers) {
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        *numNumbers = 0;
+        return;
+    }
+
+    *numNumbers = 0;
+    while (*numNumbers < MAX_NUMBERS && fgets(numbers[*numNumbers], MAX_QUESTION_LENGTH, file) != NULL) {
+        numbers[*numNumbers][strcspn(numbers[*numNumbers], "\n")] = 0;
+        (*numNumbers)++;
+    }
+
+    fclose(file);
+}
+
+void printNumbers(char numbers[][MAX_QUESTION_LENGTH], int start, int end) {
+    for (int i = start; i < end; i++) {
+        printf("%s\n", numbers[i]);
+    }
+}
+
+*/
