@@ -226,9 +226,17 @@ void setcolor(int text, int back){
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text | (back << 4));
 }
 void titleDraw() {
-    printf("\n\n\n\n\n\n");
+    printf("\n\n\n\n");
     setcolor(3, 0);
-    printf("                                                                                         ComeOn Sense Quiz\n");
+   
+    printf("     ____       _____       ____              _____                               	\n");
+    printf("    /\\  _`\\    /\\  __`\\    /\\  _`\\           /\\  __`\\              __             	\n");
+    printf("    \\ \\ \\/\\_\\  \\ \\ \\/\\ \\   \\ \\,\\L\\_\\         \\ \\ \\/\\ \\    __  __  /\\_\\    ____    	\n");
+    printf("     \\ \\ \\/_/_  \\ \\ \\ \\ \\   \\/_\\__ \\          \\ \\ \\ \\ \\  /\\ \\/\\ \\ \\/\\ \\  /\\_ ,`\\  	\n");
+    printf("      \\ \\ \\L\\ \\  \\ \\ \\_\\ \\    /\\ \\L\\ \\         \\ \\ \\\\'\\\\ \\ \\ \\_\\ \\ \\ \\ \\ \\/_/  /_ 	\n");
+    printf("       \\ \\____/   \\ \\_____\\   \\ `\\____\\         \\ \\___\\_\\ \\ \\____/  \\ \\_\\  /\\____\\	\n");
+    printf("        \\/___/     \\/_____/    \\/_____/          \\/__//_/  \\/___/    \\/_/  \\/____/	\n");
+
     setcolor(7, 0);
 }
 void gotoxy(int x, int y) {
