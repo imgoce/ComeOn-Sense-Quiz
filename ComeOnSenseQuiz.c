@@ -284,13 +284,53 @@ int main() {
                         Sleep(1000);
                         int i = level();
                         if (i == 0) {
-                            fileName = "Science Easy Level.txt";
+                            fileName = "science_easy.txt";
+                            fileName2 = "science_easy_answer.txt";
+                            fileName3 = "science_easy_hint.txt";
+                            fileName5 = "science_easy_ian.txt";
+                            selectedSection = GWAHAK;
+
+                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                         else if (i == 3) {
-                            fileName = "Science Normal Level.txt";
+                            fileName = "science_normal.txt";
+                            fileName2 = "science_normal_answer.txt";
+                            fileName3 = "science_normal_hint.txt";
+                            fileName4 = "science_normal_number";
+                            fileName5 = "science_normal_ian.txt";
+                            selectedSection = GWAHAK;
+
+                            struct Result result = questions2(loginUser, fileName, fileName2, fileName3, fileName4, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                         else if (i == 6) {
-                            fileName = "Science Hard Level.txt";
+                            fileName = "science_hard.txt";
+                            fileName2 = "science_hard_answer.txt";
+                            fileName3 = "science_hard_hint.txt";
+                            fileName5 = "science_hard_ian.txt";
+                            selectedSection = GWAHAK;
+
+                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                     }
                     else if (n == 100) {
