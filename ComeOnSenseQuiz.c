@@ -1,5 +1,4 @@
 #define _CRT_SECURE_NO_WARNINGS
-
 /* 헤더 선언 */
 #include <stdio.h>
 #include <windows.h>
@@ -7,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <stdbool.h>
 
 /* define 선언 */
 #define pause system("pause > nul")
@@ -24,6 +24,8 @@
 #define MAX_WRONG_ANSWERS 100
 #define MAX_HINT_LENGTH 256
 #define MAX_GRADE_LENGTH 2
+#define MAX_SECTIONS 6
+#define MAX_NUMBERS 400 // 100 questions * 4 numbers
 
 /* 함수 선언 */
 void init(); //크기 설정
@@ -39,11 +41,15 @@ void loadUserInfo(struct Member loginUser); //사용자 정보
 int mainDraw(struct Member loginUser); //메인 화면
 int level(); //난이도 선택
 void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], int* numQuestions); //문제를 파일에서 불러옴
-int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]); //정답인지 확인
+void readNumbers(char* filename, char numbers[][MAX_QUESTION_LENGTH], int* numNumbers); //객관식 문제 읽어옴
+void printNumbers(char numbers[][MAX_QUESTION_LENGTH], int start, int end); //객관식 문제 출력
+bool checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]); //정답인지 확인
 void saveWrongAnswer(char* filename, char question[MAX_QUESTION_LENGTH], char correctAnswer[MAX_ANSWER_LENGTH], char userAnswer[MAX_ANSWER_LENGTH]); //오답노트 저장
 void displayHint(char hints[][MAX_HINT_LENGTH], int currentQuestionIndex); //힌트
-struct Result questions(struct Member loginUser, const char* fileName, const char* fileName2, const char* fileName3, const char* username); //문제 출력
+struct Result questions(struct Member loginUser, const char* fileName, const char* fileName2, const char* fileName3, const char* username); //OX문제, 주관식 문제
+struct Result questions2(struct Member loginUser, const char* fileName, const char* fileName2, const char* fileName3, const char* fileName4, const char* username); //주관식 문제
 char* generateWrongAnswersFilename(const char* username); //오답노트 파일 이름 생성
+int isAlreadyRecorded(char* filename, char question[MAX_QUESTION_LENGTH]); //오답노트에 이미 존재하는 문제인가?
 int CorrectAnswers(); //정답
 int WrongAnswers(); //오답
 int printResult(struct Result result, struct Member loginUser); //결과 출력
