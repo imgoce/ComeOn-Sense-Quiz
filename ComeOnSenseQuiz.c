@@ -65,7 +65,17 @@ struct Member {
     char username[20];
     char wrongAnswersFilename[MAX_FILE_NAME_LENGTH];
     int difficulty;
-    struct Result field[18];
+    struct Result quizOptions[MAX_SECTIONS];
+};
+
+/* 열거형 선언 */
+enum Section {
+    SISA,
+    GUKGA,
+    INMUL,
+    GWAHAK,
+    YEOKSA,
+    YEONGEO
 };
 
 int main() {
@@ -74,7 +84,9 @@ int main() {
     const char* fileName = NULL;
     const char* fileName2 = NULL;
     const char* fileName3 = NULL;
+    const char* fileName4 = NULL;
     struct Member loginUser;
+    int selectedSection;
 
     while (1) {
         titleDraw();
@@ -96,19 +108,25 @@ int main() {
                         printf("시사");
                         Sleep(1000);
                         int i = level();
-                        strcpy(loginUser.field, "시사");
                         loginUser.difficulty = i / 3;
                         if (i == 0) {
-                            fileName = "current easy.txt";
-                            fileName2 = "current easy answers.txt";
-                            fileName3 = "current easy hint";
+                            fileName = "current_easy.txt";
+                            fileName2 = "current_easy_answers.txt";
+                            fileName3 = "current_easy_hint";
+                            selectedSection = SISA;
                         }
                         else if (i == 3) {
-                            fileName = "Current Normal Level.txt";
-                            fileName2 = "Current Normal Level Answers.txt";
+                            fileName = "current_normal.txt";
+                            fileName2 = "current_normal_answers.txt";
+                            fileName3 = "current_normal_hint.txt";
+                            fileName4 = "current_normal_number.txt";
+                            selectedSection = SISA;
                         }
                         else if (i == 6) {
-                            fileName = "Current Hard Level.txt";
+                            fileName = "current_hard.txt";
+                            fileName2 = "current_hard_answers.txt";
+                            fileName3 = "current_hard_hint.txt";
+                            selectedSection = SISA;
                         }
                     }
                     else if (n == 25) {
