@@ -398,13 +398,53 @@ int main() {
                         Sleep(1000);
                         int i = level();
                         if (i == 0) {
-                            fileName = "English Easy Level.txt";
+                            fileName = "english_easy.txt";
+                            fileName2 = "english_easy_answer.txt";
+                            fileName3 = "english_easy_hint.txt";
+                            fileName5 = "english_easy_ian.txt";
+                            selectedSection = YEONGEO;
+
+                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                         else if (i == 3) {
-                            fileName = "English Normal Level.txt";
+                            fileName = "english_normal.txt";
+                            fileName2 = "english_normal_answer.txt";
+                            fileName3 = "english_normal_hint.txt";
+                            fileName4 = "english_normal_number.txt";
+                            fileName5 = "english_normal_ian.txt";
+                            selectedSection = YEONGEO;
+
+                            struct Result result = questions2(loginUser, fileName, fileName2, fileName3, fileName4, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                         else if (i == 6) {
-                            fileName = "English Hard Level.txt";
+                            fileName = "english_hard.txt";
+                            fileName2 = "english_hard_answer.txt";
+                            fileName3 = "english_hard_hint.txt";
+                            fileName5 = "english_hard_ian.txt";
+                            selectedSection = YEONGEO;
+
+                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                     }
                 }
