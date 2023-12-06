@@ -260,7 +260,20 @@ int main() {
                             cls;
                         }
                         else if (i == 6) {
-                            fileName = "Person Hard Level.txt";
+                            fileName = "character_hard.txt";
+                            fileName2 = "character_hard_answer.txt";
+                            fileName3 = "character_hard_hint.txt";
+                            fileName5 = "character_hard_ian.txt";
+                            selectedSection = INMUL;
+
+                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                     }
                     else if (n == 75) {
