@@ -113,23 +113,53 @@ int main() {
                         int i = level();
                         loginUser.difficulty = i / 3;
                         if (i == 0) {
-                            fileName = "current_easy.txt";
-                            fileName2 = "current_easy_answers.txt";
-                            fileName3 = "current_easy_hint";
+                            fileName = "preview_easy.txt";
+                            fileName2 = "preview_easy_answers.txt";
+                            fileName3 = "preview_easy_hint.txt";
+                            fileName5 = "preview_easy_ian.txt";
                             selectedSection = SISA;
+
+                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                         else if (i == 3) {
-                            fileName = "current_normal.txt";
-                            fileName2 = "current_normal_answers.txt";
-                            fileName3 = "current_normal_hint.txt";
-                            fileName4 = "current_normal_number.txt";
+                            fileName = "preview_normal.txt";
+                            fileName2 = "preview_normal_answers.txt";
+                            fileName3 = "preview_normal_hint.txt";
+                            fileName4 = "preview_normal_number.txt";
+                            fileName5 = "preview_normal_ian.txt";
                             selectedSection = SISA;
+
+                            struct Result result = questions2(loginUser, fileName, fileName2, fileName3, fileName4, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                         else if (i == 6) {
-                            fileName = "current_hard.txt";
-                            fileName2 = "current_hard_answers.txt";
-                            fileName3 = "current_hard_hint.txt";
+                            fileName = "preview_hard.txt";
+                            fileName2 = "preview_hard_answers.txt";
+                            fileName3 = "preview_hard_hint.txt";
+                            fileName5 = "preview_hard_ian.txt";
                             selectedSection = SISA;
+
+                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                     }
                     else if (n == 25) {
