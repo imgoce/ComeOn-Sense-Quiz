@@ -959,8 +959,30 @@ void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char qu
     fclose(questionFile);
     fclose(answerFile);
 }
+void readNumbers(char* filename, char numbers[][MAX_QUESTION_LENGTH], int* numNumbers) {
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        *numNumbers = 0;
+        return;
+    }
 
-int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]) {
+    *numNumbers = 0;
+    while (*numNumbers < MAX_NUMBERS && fgets(numbers[*numNumbers], MAX_QUESTION_LENGTH, file) != NULL) {
+        numbers[*numNumbers][strcspn(numbers[*numNumbers], "\n")] = 0;
+        (*numNumbers)++;
+    }
+
+    fclose(file);
+}
+void printNumbers(char numbers[][MAX_QUESTION_LENGTH], int start, int end) {
+    int j = 0;
+    for (int i = start; i < end; i++) {
+        gotoxy(60, 17+j);
+        printf("%s\n", numbers[i]);
+        j++;
+    }
+}
+bool checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]) {
     return strcmp(userAnswer, answers[questionIndex]) == 0;
 }
 char* generateWrongAnswersFilename(const char* username) {
