@@ -154,10 +154,35 @@ int main() {
                         Sleep(1000);
                         int i = level();
                         if (i == 0) {
-                            fileName = "Person Easy Level.txt";
+                            fileName = "character_easy.txt";
+                            fileName2 = "character_easy_answer.txt";
+                            fileName3 = "character_easy_hint.txt";
+                            selectedSection = INMUL;
+
+                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                         else if (i == 3) {
-                            fileName = "Person Normal Level.txt";
+                            fileName = "character_normal.txt";
+                            fileName2 = "character_normal_answer.txt";
+                            fileName3 = "character_normal_hint.txt";
+                            fileName4 = "character_normal_number.txt";
+                            selectedSection = INMUL;
+
+                            struct Result result = questions2(loginUser, fileName, fileName2, fileName3, fileName4, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                         else if (i == 6) {
                             fileName = "Person Hard Level.txt";
