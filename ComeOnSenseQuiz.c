@@ -69,7 +69,7 @@ int main() {
     const char* fileName2 = NULL;
     const char* fileName3 = NULL;
     struct Member loginUser;
-    
+
     while (1) {
         titleDraw();
         int menuCode = menuDraw();
@@ -224,13 +224,13 @@ int main() {
 void init() {
     system("mode con cols=190 lines=50 | title ComeOn Sense Quiz");
 }
-void setcolor(int text, int back){
+void setcolor(int text, int back) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), text | (back << 4));
 }
 void titleDraw() {
     printf("\n\n\n\n");
     setcolor(3, 0);
-   
+
     printf("     ____       _____       ____              _____                               	\n");
     printf("    /\\  _`\\    /\\  __`\\    /\\  _`\\           /\\  __`\\              __             	\n");
     printf("    \\ \\ \\/\\_\\  \\ \\ \\/\\ \\   \\ \\,\\L\\_\\         \\ \\ \\/\\ \\    __  __  /\\_\\    ____    	\n");
@@ -272,14 +272,14 @@ int keyControl() {
     }
 }
 int menuDraw() {
-    int x = 90;
-    int y = 35;
+    int x = 35;
+    int y = 15;
     gotoxy(x - 2, y);
 
-    setcolor(3,0);
+    setcolor(3, 0);
     printf("★ ");
     gotoxy(x, y);
-    setcolor(7,0);
+    setcolor(7, 0);
 
     printf("ID 입력");
     gotoxy(x, y + 1);
@@ -290,40 +290,40 @@ int menuDraw() {
         int n = keyControl();
         switch (n) {
         case UP: {
-            if (y > 35) {
+            if (y > 15) {
                 gotoxy(x - 2, y);
                 printf(" ");
                 gotoxy(x - 2, --y);
 
-                setcolor(3,0);
+                setcolor(3, 0);
                 printf("★");
-                setcolor(7,0);
+                setcolor(7, 0);
 
             }
             break;
         }
         case DOWN: {
-            if (y < 37) {
+            if (y < 17) {
                 gotoxy(x - 2, y);
                 printf(" ");
                 gotoxy(x - 2, ++y);
 
-                setcolor(3,0);
+                setcolor(3, 0);
                 printf("★");
-                setcolor(7,0);
+                setcolor(7, 0);
 
             }
             break;
         }
         case SUBMIT: {
-            return y - 35;
+            return y - 15;
         }
         }
     }
 }
 void signup() {
-    int x = 90;
-    int y = 35;
+    int x = 35;
+    int y = 15;
     gotoxy(x, y);
     printf("                ");
     gotoxy(x, y + 1);
@@ -364,8 +364,8 @@ void signup() {
     }
 }
 struct Member login() {
-    int x = 90;
-    int y = 35;
+    int x = 35;
+    int y = 15;
     struct Member member;
     char inputUsername[20];
     FILE* file;
@@ -467,9 +467,18 @@ int mainDraw(struct Member loginUser) {
     int x = 30;
     int y = 35;
     cls;
-    printf("\n\n\n");
-    printf("                                                                                         ComeOn Sense Quiz\n");
+    printf("\n\n\n\n");
+    setcolor(3, 0);
 
+    printf("     ____       _____       ____              _____                               	\n");
+    printf("    /\\  _`\\    /\\  __`\\    /\\  _`\\           /\\  __`\\              __             	\n");
+    printf("    \\ \\ \\/\\_\\  \\ \\ \\/\\ \\   \\ \\,\\L\\_\\         \\ \\ \\/\\ \\    __  __  /\\_\\    ____    	\n");
+    printf("     \\ \\ \\/_/_  \\ \\ \\ \\ \\   \\/_\\__ \\          \\ \\ \\ \\ \\  /\\ \\/\\ \\ \\/\\ \\  /\\_ ,`\\  	\n");
+    printf("      \\ \\ \\L\\ \\  \\ \\ \\_\\ \\    /\\ \\L\\ \\         \\ \\ \\\\'\\\\ \\ \\ \\_\\ \\ \\ \\ \\ \\/_/  /_ 	\n");
+    printf("       \\ \\____/   \\ \\_____\\   \\ `\\____\\         \\ \\___\\_\\ \\ \\____/  \\ \\_\\  /\\____\\	\n");
+    printf("        \\/___/     \\/_____/    \\/_____/          \\/__//_/  \\/___/    \\/_/  \\/____/	\n");
+
+    setcolor(7, 0);
     loadUserInfo(loginUser);
 
     gotoxy(90, 10);
@@ -480,10 +489,10 @@ int mainDraw(struct Member loginUser) {
 
     gotoxy(x - 2, y);
 
-    setcolor(3,0);
+    setcolor(3, 0);
     printf("★ ");
     gotoxy(x, y);
-    setcolor(7,0);
+    setcolor(7, 0);
 
     printf("시사");
     gotoxy(x + 25, y);
@@ -507,9 +516,9 @@ int mainDraw(struct Member loginUser) {
                 x = x + 25;
                 gotoxy(x - 2, y);
 
-                setcolor(3,0);
+                setcolor(3, 0);
                 printf("★");
-                setcolor(7,0);
+                setcolor(7, 0);
             }
             break;
         }
@@ -520,9 +529,9 @@ int mainDraw(struct Member loginUser) {
                 x = x - 25;
                 gotoxy(x - 2, y);
 
-                setcolor(3,0);
+                setcolor(3, 0);
                 printf("★");
-                setcolor(7,0);
+                setcolor(7, 0);
 
             }
             break;
@@ -539,13 +548,13 @@ int level() {
     int y = 20;
     gotoxy(x - 2, y);
 
-    setcolor(3,0);
+    setcolor(3, 0);
     printf("★ ");
     gotoxy(x, y);
-    setcolor(7,0);
+    setcolor(7, 0);
 
     printf("Easy");
-    gotoxy(x, y+3);
+    gotoxy(x, y + 3);
     printf("Normal");
     gotoxy(x, y + 6);
     printf("Hard");
@@ -558,10 +567,10 @@ int level() {
                 printf(" ");
                 y = y - 3;
                 gotoxy(x - 2, y);
-                
-                setcolor(3,0);
+
+                setcolor(3, 0);
                 printf("★");
-                setcolor(7,0);
+                setcolor(7, 0);
 
 
             }
@@ -574,9 +583,9 @@ int level() {
                 y = y + 3;
                 gotoxy(x - 2, y);
 
-                setcolor(3,0);
+                setcolor(3, 0);
                 printf("★");
-                setcolor(7,0);
+                setcolor(7, 0);
 
             }
             break;
@@ -914,10 +923,10 @@ int printResult(struct Result result, struct Member loginUser) {
     printf("오답 수: %d\n", result.wrongCount);
     gotoxy(x - 2, y);
 
-    setcolor(3,0);
+    setcolor(3, 0);
     printf("★ ");
     gotoxy(x, y);
-    setcolor(7,0);
+    setcolor(7, 0);
 
 
     printf("오답노트");
@@ -933,9 +942,9 @@ int printResult(struct Result result, struct Member loginUser) {
                 x = x + 170;
                 gotoxy(x - 2, y);
 
-                setcolor(3,0);
+                setcolor(3, 0);
                 printf("★");
-                setcolor(7,0);
+                setcolor(7, 0);
 
             }
             break;
@@ -946,10 +955,10 @@ int printResult(struct Result result, struct Member loginUser) {
                 printf(" ");
                 x = x - 170;
                 gotoxy(x - 2, y);
-               
-                setcolor(3,0);
+
+                setcolor(3, 0);
                 printf("★");
-                setcolor(7,0);
+                setcolor(7, 0);
             }
             break;
         }
