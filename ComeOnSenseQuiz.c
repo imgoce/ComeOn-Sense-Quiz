@@ -341,13 +341,53 @@ int main() {
                         Sleep(1000);
                         int i = level();
                         if (i == 0) {
-                            fileName = "History Easy Level.txt";
+                            fileName = "history_easy.txt";
+                            fileName2 = "history_easy_answer.txt";
+                            fileName3 = "history_easy_hint.txt";
+                            fileName5 = "history_easy_ian.txt";
+                            selectedSection = YEOKSA;
+
+                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                         else if (i == 3) {
-                            fileName = "History Normal Level.txt";
+                            fileName = "history_normal.txt";
+                            fileName2 = "history_normal_answer.txt";
+                            fileName3 = "history_normal_hint.txt";
+                            fileName4 = "history_normal_number.txt";
+                            fileName5 = "history_normal_ian.txt";
+                            selectedSection = YEOKSA;
+
+                            struct Result result = questions2(loginUser, fileName, fileName2, fileName3, fileName4, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                         else if (i == 6) {
-                            fileName = "History Hard Level.txt";
+                            fileName = "history_hard.txt";
+                            fileName2 = "history_hard_answer.txt";
+                            fileName3 = "history_hard_hint.txt";
+                            fileName5 = "history_hard_ian.txt";
+                            selectedSection = YEOKSA;
+
+                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            if (result.isError) {
+                                gotoxy(80, 25);
+                                printf("Error executing questions function.\n");
+                                return 1;
+                            }
+                            int r = printResult(result, loginUser, selectedSection);
+                            cls;
                         }
                     }
                     else if (n == 125) {
