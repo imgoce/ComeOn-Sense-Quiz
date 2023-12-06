@@ -1,0 +1,40 @@
+1. Happy
+2. Lucky
+3. Sad
+4. Angry
+1. She don't like coffee.
+2. She doesn't like coffee.
+3. She not likes coffee.
+4. She isn't like coffee.
+1. Clumsy
+2. Elegant
+3. Awkward
+4. Shabby
+1. Beautiful - Attractive
+2. Angry - Furious
+3. Smart - Stupid
+4. Brave - Courageous
+1. Lose
+2. Loses
+3. Losing
+4. Lost
+1. Amazing
+2. Ordinary
+3. Boring
+4. Average
+1. with
+2. at
+3. on
+4. by
+1. Patient
+2. Urgent
+3. Calm
+4. Tolerant
+1. Know
+2. Knowing
+3. Known
+4. Knows
+1. Tiny
+2. Enormous
+3. Average
+4. Modest
