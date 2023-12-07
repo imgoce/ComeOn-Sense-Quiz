@@ -20,13 +20,13 @@
 #define MAX_LINE_LENGTH 100
 #define MAX_QUESTION_LENGTH 256
 #define MAX_ANSWER_LENGTH 64
-#define MAX_QUESTIONS 100
+#define MAX_QUESTIONS 500
 #define MAX_WRONG_ANSWERS 100
 #define MAX_HINT_LENGTH 256
 #define MAX_GRADE_LENGTH 2
 #define MAX_SECTIONS 6
 #define MAX_NUMBERS 400 // 100 questions * 4 numbers
-#define MAX_EXPLANATION_LENGTH 256
+#define MAX_EXPLANATION_LENGTH 500
 
 /* 함수 선언 */
 void init(); //크기 설정
@@ -61,13 +61,18 @@ struct Result {
     int correctCount;
     int wrongCount;
     int isError;
-    char grade[MAX_GRADE_LENGTH + 1];
+    char grade[MAX_GRADE_LENGTH];
+};
+struct QuizOption {
+    char grade[MAX_GRADE_LENGTH];
+    int correctCount;
+    int wrongCount;
 };
 struct Member {
     char username[20];
     char wrongAnswersFilename[MAX_FILE_NAME_LENGTH];
     int difficulty;
-    struct Result quizOptions[MAX_SECTIONS];
+    struct QuizOption quizOptions[MAX_SECTIONS];
 };
 
 /* 열거형 선언 */
@@ -118,6 +123,7 @@ int main() {
                             fileName3 = "preview_easy_hint.txt";
                             fileName5 = "preview_easy_ian.txt";
                             selectedSection = SISA;
+                            
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -689,7 +695,7 @@ void loadUserInfo(struct Member loginUser) {
     gotoxy(10, 17);
     printf("국가(Hard) : ");
     gotoxy(10, 18);
-    printf("인물(Easy) : ");
+    printf("인물(Easy) : %c(정답 : %d, 오답 : %d)", loginUser.quizOptions[INMUL].grade, loginUser.quizOptions[INMUL].correctCount, loginUser.quizOptions[INMUL].wrongCount);
     gotoxy(10, 19);
     printf("인물(Normal) : ");
     gotoxy(10, 20);
@@ -1493,6 +1499,12 @@ int printResult(struct Result result, struct Member loginUser, int selectedSecti
         strcpy(loginUser.quizOptions[SISA].grade, result.grade);
         loginUser.quizOptions[SISA].correctCount = result.correctCount;
         loginUser.quizOptions[SISA].wrongCount = result.wrongCount;
+        break;
+    }
+    case INMUL: {
+        strcpy(loginUser.quizOptions[INMUL].grade, result.grade);
+        loginUser.quizOptions[INMUL].correctCount = result.correctCount;
+        loginUser.quizOptions[INMUL].wrongCount = result.wrongCount;
         break;
     }
     }
