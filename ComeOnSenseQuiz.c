@@ -1702,7 +1702,7 @@ void displayHint(char hints[][MAX_HINT_LENGTH], int currentQuestionIndex) {
 
 */
 
-/* 4를 누르면 오답노트 출력하는 코드 (미완)
+/* 4를 누르면 오답노트 출력하는 코드
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
