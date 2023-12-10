@@ -85,6 +85,21 @@ enum Section {
     YEONGEO
 };
 
+/* 구조체 선언 */
+typedef struct Result {
+    int correctCount;
+    int wrongCount;
+    char grade;
+    int isError;
+    float percentage;
+}RESULT;
+typedef struct Member {
+    char username[MAX_NAME_LENGTH];
+    char wrongAnswersFilename[MAX_FILE_NAME_LENGTH];
+    int difficulty;
+    struct Result result;
+}MEMBER;
+
 int main() {
     init();
     struct Member data;
@@ -94,7 +109,7 @@ int main() {
     const char* fileName4 = NULL;
     const char* fileName5 = NULL;
     struct Member loginUser;
-    int selectedSection;
+    int i;
 
     while (1) {
         titleDraw();
@@ -107,23 +122,31 @@ int main() {
             while (1) {
                 if (strcmp(loginUser.username, "") != 0) {
                     data = loginUser;
-                    int n = mainDraw(data);
+                    int n = mainDraw(data, &data);
+                    if (n == 1)
+                        return 0;
+                    if (n == 2)
+                        break;
+                    char fileCategory[2];
+                    char fileDifficulty[6];
+                    char filename[100];
 
                     if (n == 0) {
                         //시사
                         cls;
                         gotoxy(95, 25);
                         printf("시사");
+                        strcpy(fileCategory, "시사");
                         Sleep(1000);
-                        int i = level();
+                        i = level();
                         loginUser.difficulty = i / 3;
                         if (i == 0) {
                             fileName = "preview_easy.txt";
                             fileName2 = "preview_easy_answers.txt";
                             fileName3 = "preview_easy_hint.txt";
                             fileName5 = "preview_easy_ian.txt";
-                            selectedSection = SISA;
-                            
+                            strcpy(fileDifficulty, "easy");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -131,7 +154,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                         else if (i == 3) {
@@ -140,7 +183,8 @@ int main() {
                             fileName3 = "preview_normal_hint.txt";
                             fileName4 = "preview_normal_number.txt";
                             fileName5 = "preview_normal_ian.txt";
-                            selectedSection = SISA;
+                            strcpy(fileDifficulty, "normal");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions2(loginUser, fileName, fileName2, fileName3, fileName4, fileName5, data.username);
                             if (result.isError) {
@@ -148,7 +192,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                         else if (i == 6) {
@@ -156,7 +220,8 @@ int main() {
                             fileName2 = "preview_hard_answers.txt";
                             fileName3 = "preview_hard_hint.txt";
                             fileName5 = "preview_hard_ian.txt";
-                            selectedSection = SISA;
+                            strcpy(fileDifficulty, "hard");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -164,7 +229,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                     }
@@ -173,14 +258,16 @@ int main() {
                         cls;
                         gotoxy(95, 25);
                         printf("국가");
+                        strcpy(fileCategory, "국가");
                         Sleep(1000);
-                        int i = level();
+                        i = level();
                         if (i == 0) {
                             fileName = "country_easy.txt";
                             fileName2 = "country_easy_answers.txt";
                             fileName3 = "country_easy_hint.txt";
                             fileName5 = "country_easy_ian.txt";
-                            selectedSection = GUKGA;
+                            strcpy(fileDifficulty, "easy");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -188,7 +275,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                         else if (i == 3) {
@@ -197,7 +304,8 @@ int main() {
                             fileName3 = "country_normal_hint.txt";
                             fileName4 = "country_normal_number.txt";
                             fileName5 = "country_normal_ian.txt";
-                            selectedSection = GUKGA;
+                            strcpy(fileDifficulty, "normal");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions2(loginUser, fileName, fileName2, fileName3, fileName4, fileName5, data.username);
                             if (result.isError) {
@@ -205,7 +313,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                         else if (i == 6) {
@@ -213,7 +341,8 @@ int main() {
                             fileName2 = "country_hard_answers.txt";
                             fileName3 = "country_hard_hint.txt";
                             fileName5 = "country_hard_ian.txt";
-                            selectedSection = GUKGA;
+                            strcpy(fileDifficulty, "hard");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -221,7 +350,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                     }
@@ -230,14 +379,16 @@ int main() {
                         cls;
                         gotoxy(95, 25);
                         printf("인물");
+                        strcpy(fileCategory, "인물");
                         Sleep(1000);
-                        int i = level();
+                        i = level();
                         if (i == 0) {
                             fileName = "character_easy.txt";
                             fileName2 = "character_easy_answer.txt";
                             fileName3 = "character_easy_hint.txt";
                             fileName5 = "character_easy_ian.txt";
-                            selectedSection = INMUL;
+                            strcpy(fileDifficulty, "easy");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -245,7 +396,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+                       
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                         else if (i == 3) {
@@ -254,7 +425,8 @@ int main() {
                             fileName3 = "character_normal_hint.txt";
                             fileName4 = "character_normal_number.txt";
                             fileName5 = "character_normal_ian.txt";
-                            selectedSection = INMUL;
+                            strcpy(fileDifficulty, "normal");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions2(loginUser, fileName, fileName2, fileName3, fileName4, fileName5, data.username);
                             if (result.isError) {
@@ -262,7 +434,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                         else if (i == 6) {
@@ -270,7 +462,8 @@ int main() {
                             fileName2 = "character_hard_answer.txt";
                             fileName3 = "character_hard_hint.txt";
                             fileName5 = "character_hard_ian.txt";
-                            selectedSection = INMUL;
+                            strcpy(fileDifficulty, "hard");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -278,7 +471,26 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             cls;
                         }
                     }
@@ -287,14 +499,16 @@ int main() {
                         cls;
                         gotoxy(95, 25);
                         printf("과학");
+                        strcpy(fileCategory, "과학");
                         Sleep(1000);
-                        int i = level();
+                        i = level();
                         if (i == 0) {
                             fileName = "science_easy.txt";
                             fileName2 = "science_easy_answer.txt";
                             fileName3 = "science_easy_hint.txt";
                             fileName5 = "science_easy_ian.txt";
-                            selectedSection = GWAHAK;
+                            strcpy(fileDifficulty, "easy");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -302,7 +516,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                         else if (i == 3) {
@@ -311,7 +545,8 @@ int main() {
                             fileName3 = "science_normal_hint.txt";
                             fileName4 = "science_normal_number";
                             fileName5 = "science_normal_ian.txt";
-                            selectedSection = GWAHAK;
+                            strcpy(fileDifficulty, "normal");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions2(loginUser, fileName, fileName2, fileName3, fileName4, fileName5, data.username);
                             if (result.isError) {
@@ -319,7 +554,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                         else if (i == 6) {
@@ -327,7 +582,8 @@ int main() {
                             fileName2 = "science_hard_answer.txt";
                             fileName3 = "science_hard_hint.txt";
                             fileName5 = "science_hard_ian.txt";
-                            selectedSection = GWAHAK;
+                            strcpy(fileDifficulty, "hard");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -335,7 +591,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                     }
@@ -344,14 +620,16 @@ int main() {
                         cls;
                         gotoxy(95, 25);
                         printf("역사");
+                        strcpy(fileCategory, "역사");
                         Sleep(1000);
-                        int i = level();
+                        i = level();
                         if (i == 0) {
                             fileName = "history_easy.txt";
                             fileName2 = "history_easy_answer.txt";
                             fileName3 = "history_easy_hint.txt";
                             fileName5 = "history_easy_ian.txt";
-                            selectedSection = YEOKSA;
+                            strcpy(fileDifficulty, "easy");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -359,7 +637,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                         else if (i == 3) {
@@ -368,7 +666,8 @@ int main() {
                             fileName3 = "history_normal_hint.txt";
                             fileName4 = "history_normal_number.txt";
                             fileName5 = "history_normal_ian.txt";
-                            selectedSection = YEOKSA;
+                            strcpy(fileDifficulty, "noraml");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions2(loginUser, fileName, fileName2, fileName3, fileName4, fileName5, data.username);
                             if (result.isError) {
@@ -376,7 +675,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                         else if (i == 6) {
@@ -384,7 +703,8 @@ int main() {
                             fileName2 = "history_hard_answer.txt";
                             fileName3 = "history_hard_hint.txt";
                             fileName5 = "history_hard_ian.txt";
-                            selectedSection = YEOKSA;
+                            strcpy(fileDifficulty, "hard");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -392,7 +712,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                     }
@@ -401,14 +741,16 @@ int main() {
                         cls;
                         gotoxy(95, 25);
                         printf("영어");
+                        strcpy(fileCategory, "영어");
                         Sleep(1000);
-                        int i = level();
+                        i = level();
                         if (i == 0) {
                             fileName = "english_easy.txt";
                             fileName2 = "english_easy_answer.txt";
                             fileName3 = "english_easy_hint.txt";
                             fileName5 = "english_easy_ian.txt";
-                            selectedSection = YEONGEO;
+                            strcpy(fileDifficulty, "easy");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -416,7 +758,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                         else if (i == 3) {
@@ -425,7 +787,8 @@ int main() {
                             fileName3 = "english_normal_hint.txt";
                             fileName4 = "english_normal_number.txt";
                             fileName5 = "english_normal_ian.txt";
-                            selectedSection = YEONGEO;
+                            strcpy(fileDifficulty, "normal");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions2(loginUser, fileName, fileName2, fileName3, fileName4, fileName5, data.username);
                             if (result.isError) {
@@ -433,7 +796,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                         else if (i == 6) {
@@ -441,7 +824,8 @@ int main() {
                             fileName2 = "english_hard_answer.txt";
                             fileName3 = "english_hard_hint.txt";
                             fileName5 = "english_hard_ian.txt";
-                            selectedSection = YEONGEO;
+                            strcpy(fileDifficulty, "hard");
+                            sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
                             struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
@@ -449,7 +833,27 @@ int main() {
                                 printf("Error executing questions function.\n");
                                 return 1;
                             }
-                            int r = printResult(result, loginUser, selectedSection);
+                            int r = printResult(result, loginUser);
+                            float totalQuestions = (float)(result.correctCount + result.wrongCount);
+                            float correctPercentage = (result.correctCount / totalQuestions) * 100;
+                            char grade2 = '\0';
+                            if (result.correctCount == totalQuestions)
+                                grade2 = 'S';
+                            else if (correctPercentage >= 80)
+                                grade2 = 'A';
+                            else if (correctPercentage >= 60)
+                                grade2 = 'B';
+                            else if (correctPercentage >= 40)
+                                grade2 = 'C';
+                            else if (correctPercentage >= 20)
+                                grade2 = 'D';
+                            else
+                                grade2 = 'E';
+
+                            FILE* file = fopen(filename, "w");
+
+                            fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
                             cls;
                         }
                     }
