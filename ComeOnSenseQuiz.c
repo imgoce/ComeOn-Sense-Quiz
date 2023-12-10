@@ -1091,7 +1091,7 @@ int isUsernameExists(const char* username) {
 void loadUserInfo(struct Member loginUser) {
     char filename[50];
     gotoxy(10, 10);
-    printf("사용자 정보");
+    printf("사용자 정보(최근 기록)");
     gotoxy(10, 11);
     printf("ID : %s", loginUser.username);
     gotoxy(10, 12);
