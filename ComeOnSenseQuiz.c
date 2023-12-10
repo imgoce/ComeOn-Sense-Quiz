@@ -1088,46 +1088,245 @@ int isUsernameExists(const char* username) {
     return 0; // 아이디 존재하지 않음
 }
 void loadUserInfo(struct Member loginUser) {
+    char filename[50];
     gotoxy(10, 10);
     printf("사용자 정보");
     gotoxy(10, 11);
     printf("ID : %s", loginUser.username);
     gotoxy(10, 12);
-    printf("시사(Easy) : %c(정답 : %d, 오답 : %d)", loginUser.quizOptions[SISA].grade, loginUser.quizOptions[SISA].correctCount, loginUser.quizOptions[SISA].wrongCount);
+    sprintf(filename, "%s_시사_easy.txt", loginUser.username);
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("시사(Easy) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file);
+    }
     gotoxy(10, 13);
-    printf("시사(Normal) : ");
+    sprintf(filename, "%s_시사_normal.txt", loginUser.username);
+    FILE* file2 = fopen(filename, "r");
+    if (file2 == NULL) {
+        printf("시사(Normal) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file2)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file2);
+    }
     gotoxy(10, 14);
-    printf("시사(Hard) : ");
+    sprintf(filename, "%s_시사_hard.txt", loginUser.username);
+    FILE* file3 = fopen(filename, "r");
+    if (file3 == NULL) {
+        printf("시사(Hard) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file3)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file3);
+    }
     gotoxy(10, 15);
-    printf("국가(Easy) : ");
+    sprintf(filename, "%s_국가_easy.txt", loginUser.username);
+    FILE* file4 = fopen(filename, "r");
+    if (file4 == NULL) {
+        printf("국가(Easy) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file4)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file4);
+    }
     gotoxy(10, 16);
-    printf("국가(Normal) : ");
+    sprintf(filename, "%s_국가_normal.txt", loginUser.username);
+    FILE* file5 = fopen(filename, "r");
+    if (file5 == NULL) {
+        printf("국가(Normal) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file5)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file5);
+    }
     gotoxy(10, 17);
-    printf("국가(Hard) : ");
+    sprintf(filename, "%s_국가_hard.txt", loginUser.username);
+    FILE* file6 = fopen(filename, "r");
+    if (file6 == NULL) {
+        printf("국가(Hard) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file6)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file6);
+    }
     gotoxy(10, 18);
-    printf("인물(Easy) : %c(정답 : %d, 오답 : %d)", loginUser.quizOptions[INMUL].grade, loginUser.quizOptions[INMUL].correctCount, loginUser.quizOptions[INMUL].wrongCount);
+    sprintf(filename, "%s_인물_easy.txt", loginUser.username);
+    FILE* file7 = fopen(filename, "r");
+    if (file7 == NULL) {
+        printf("인물(Easy) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file7)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file7);
+    }
     gotoxy(10, 19);
-    printf("인물(Normal) : ");
+    sprintf(filename, "%s_인물_normal.txt", loginUser.username);
+    FILE* file8 = fopen(filename, "r");
+    if (file8 == NULL) {
+        printf("인물(Normal) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file8)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file8);
+    }
     gotoxy(10, 20);
-    printf("인물(Hard) : ");
+    sprintf(filename, "%s_인물_hard.txt", loginUser.username);
+    FILE* file9 = fopen(filename, "r");
+    if (file9 == NULL) {
+        printf("인물(Hard) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file9)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file9);
+    }
     gotoxy(10, 21);
-    printf("과학(Easy) : ");
+    sprintf(filename, "%s_과학_easy.txt", loginUser.username);
+    FILE* file10 = fopen(filename, "r");
+    if (file10 == NULL) {
+        printf("과학(Easy) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file10)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file10);
+    }
     gotoxy(10, 22);
-    printf("과학(Normal) : ");
+    sprintf(filename, "%s_과학_normal.txt", loginUser.username);
+    FILE* file11 = fopen(filename, "r");
+    if (file11 == NULL) {
+        printf("과학(Normal) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file11)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file11);
+    }
     gotoxy(10, 23);
-    printf("과학(Hard) : ");
+    sprintf(filename, "%s_과학_hard.txt", loginUser.username);
+    FILE* file12 = fopen(filename, "r");
+    if (file12 == NULL) {
+        printf("과학(Hard) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file12)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file12);
+    }
     gotoxy(10, 24);
-    printf("역사(Easy) : ");
+    sprintf(filename, "%s_역사_easy.txt", loginUser.username);
+    FILE* file13 = fopen(filename, "r");
+    if (file13 == NULL) {
+        printf("역사(Easy) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file13)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file13);
+    }
     gotoxy(10, 25);
-    printf("역사(Normal) : ");
+    sprintf(filename, "%s_역사_normal.txt", loginUser.username);
+    FILE* file14 = fopen(filename, "r");
+    if (file14 == NULL) {
+        printf("역사(Normal) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file14)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file14);
+    }
     gotoxy(10, 26);
-    printf("역사(Hard) : ");
+    sprintf(filename, "%s_역사_hard.txt", loginUser.username);
+    FILE* file15 = fopen(filename, "r");
+    if (file15 == NULL) {
+        printf("역사(Hard) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file15)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file15);
+    }
     gotoxy(10, 27);
-    printf("영어(Easy) : ");
+    sprintf(filename, "%s_영어_easy.txt", loginUser.username);
+    FILE* file16 = fopen(filename, "r");
+    if (file16 == NULL) {
+        printf("영어(Easy) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file16)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file16);
+    }
     gotoxy(10, 28);
-    printf("영어(Normal) : ");
+    sprintf(filename, "%s_영어_normal.txt", loginUser.username);
+    FILE* file17 = fopen(filename, "r");
+    if (file17 == NULL) {
+        printf("영어(Normal) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file17)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file17);
+    }
     gotoxy(10, 29);
-    printf("영어(Hard) : ");
+    sprintf(filename, "%s_영어_hard.txt", loginUser.username);
+    FILE* file18 = fopen(filename, "r");
+    if (file18 == NULL) {
+        printf("영어(Hard) : ");
+    }
+    else {
+        char ch;
+        while ((ch = fgetc(file18)) != EOF) {
+            putchar(ch);
+        }
+        fclose(file18);
+    }
 }
 int mainDraw(struct Member loginUser) {
     int x = 30;
