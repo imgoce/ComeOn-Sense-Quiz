@@ -930,6 +930,12 @@ int keyControl() {
         else if (temp == '\r' || GetAsyncKeyState(VK_RETURN) & 0x8000) {
             return SUBMIT;
         }
+        else if (temp == 'e' || temp == 'E') {
+            return EXIT;
+        }
+        else if (temp == 'r' || temp == 'R') {
+            return RETURN;
+        }
         else {
             continue;
         }
