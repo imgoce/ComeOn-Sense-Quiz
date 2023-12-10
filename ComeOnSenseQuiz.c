@@ -16,6 +16,8 @@
 #define LEFT 2
 #define RIGHT 3
 #define SUBMIT 4
+#define EXIT 5
+#define RETURN 6
 #define MAX_FILE_NAME_LENGTH 100
 #define MAX_LINE_LENGTH 100
 #define MAX_QUESTION_LENGTH 256
@@ -27,6 +29,8 @@
 #define MAX_SECTIONS 6
 #define MAX_NUMBERS 400 // 100 questions * 4 numbers
 #define MAX_EXPLANATION_LENGTH 500
+#define MAX_NAME_LENGTH 50
+#define MAX_MEMBERS 100
 
 /* 함수 선언 */
 void init(); //크기 설정
@@ -55,35 +59,6 @@ int isAlreadyRecorded(char* filename, char question[MAX_QUESTION_LENGTH]); //오
 int CorrectAnswers(); //정답
 int WrongAnswers(int currentQuestionIndex, char answers[][MAX_ANSWER_LENGTH], char ian[][MAX_EXPLANATION_LENGTH]); //오답
 int printResult(struct Result result, struct Member loginUser); //결과 출력
-
-/* 구조체 선언 */
-struct Result {
-    int correctCount;
-    int wrongCount;
-    int isError;
-    char grade[MAX_GRADE_LENGTH];
-};
-struct QuizOption {
-    char grade[MAX_GRADE_LENGTH];
-    int correctCount;
-    int wrongCount;
-};
-struct Member {
-    char username[20];
-    char wrongAnswersFilename[MAX_FILE_NAME_LENGTH];
-    int difficulty;
-    struct QuizOption quizOptions[MAX_SECTIONS];
-};
-
-/* 열거형 선언 */
-enum Section {
-    SISA,
-    GUKGA,
-    INMUL,
-    GWAHAK,
-    YEOKSA,
-    YEONGEO
-};
 
 /* 구조체 선언 */
 typedef struct Result {
@@ -1328,71 +1303,7 @@ void loadUserInfo(struct Member loginUser) {
         fclose(file18);
     }
 }
-int mainDraw(struct Member loginUser) {
-    int x = 30;
-    int y = 35;
-    cls;
-    printf("\n\n\n");
-    printf("                                                                                         ComeOn Sense Quiz\n");
 
-    loadUserInfo(loginUser);
-
-    gotoxy(90, 10);
-    printf("오답 노트");
-
-    gotoxy(150, 10);
-    printf("리더 보드");
-
-    gotoxy(x - 2, y);
-    setcolor(3, 0);
-    printf("> ");
-    gotoxy(x, y);
-    setcolor(7, 0);
-    printf("시사");
-    gotoxy(x + 25, y);
-    printf("국가");
-    gotoxy(x + 50, y);
-    printf("인물");
-    gotoxy(x + 75, y);
-    printf("과학");
-    gotoxy(x + 100, y);
-    printf("역사");
-    gotoxy(x + 125, y);
-    printf("영어");
-
-    while (1) {
-        int n = keyControl();
-        switch (n) {
-        case RIGHT: {
-            if (x > 28 && x < 155) {
-                gotoxy(x - 2, y);
-                printf(" ");
-                x = x + 25;
-                gotoxy(x - 2, y);
-                setcolor(3, 0);
-                printf(">");
-                setcolor(7, 0);
-            }
-            break;
-        }
-        case LEFT: {
-            if (x < 157 && x > 30) {
-                gotoxy(x - 2, y);
-                printf(" ");
-                x = x - 25;
-                gotoxy(x - 2, y);
-                setcolor(3, 0);
-                printf(">");
-                setcolor(7, 0);
-            }
-            break;
-        }
-        case SUBMIT: {
-            return x - 30;
-        }
-        }
-    }
-}
 int level() {
     cls;
     int x = 90;
@@ -1513,7 +1424,7 @@ struct Result questions(struct Member loginUser, const char* fileName, const cha
             int currentQuestionIndex = questionOrder[i];
 
             gotoxy(175, 5);
-            printf("Hint (h 입력)");
+            printf("Hint (h)");
 
             gotoxy(50, 15);
             printf("문제: %s\n", questions[currentQuestionIndex]);
@@ -1550,7 +1461,7 @@ struct Result questions(struct Member loginUser, const char* fileName, const cha
                                 cls;
                                 return result;
                             }
-                            saveWrongAnswer(wrongAnswersFilename, questions[currentQuestionIndex], answers[currentQuestionIndex], userAnswer, ian);
+                            saveWrongAnswer(wrongAnswersFilename, questions[currentQuestionIndex], answers[currentQuestionIndex], userAnswer, ian[currentQuestionIndex]);
                             Sleep(1000);
                             cls;
                         }
@@ -1747,7 +1658,7 @@ struct Result questions2(struct Member loginUser, const char* fileName, const ch
                                 cls;
                                 return result;
                             }
-                            saveWrongAnswer(wrongAnswersFilename, questions[currentQuestionIndex], answers[currentQuestionIndex], userAnswer, ian);
+                            saveWrongAnswer(wrongAnswersFilename, questions[currentQuestionIndex], answers[currentQuestionIndex], userAnswer, ian[currentQuestionIndex]);
                             Sleep(1000);
                             cls;
                         }
@@ -2059,40 +1970,56 @@ int WrongAnswers(int currentQuestionIndex, char answers[][MAX_ANSWER_LENGTH], ch
         }
     }
 }
-int printResult(struct Result result, struct Member loginUser, int selectedSection) {
+int compare(const void* a, const void* b) {
+    struct Member* memberA = (struct Member*)a;
+    struct Member* memberB = (struct Member*)b;
+
+    if (memberA->result.percentage > memberB->result.percentage) {
+        return -1;
+    }
+    else if (memberA->result.percentage < memberB->result.percentage) {
+        return 1;
+    }
+    else {
+        if (memberA->result.correctCount > memberB->result.correctCount) {
+            return -1;
+        }
+        else if (memberA->result.correctCount < memberB->result.correctCount) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+}
+int printResult(struct Result result, struct Member loginUser) {
     float totalQuestions = result.correctCount + result.wrongCount;
-    float wrongPercentage = (result.wrongCount / totalQuestions) * 100;
+    float correctPercentage = (result.correctCount / totalQuestions) * 100;
 
     gotoxy(90, 10);
     if (result.correctCount == totalQuestions) {
         printf("등급: S\n");
-        strncpy(result.grade, "S", MAX_GRADE_LENGTH);
-        result.grade[MAX_GRADE_LENGTH] = '\0';
+        result.grade = 'S';
     }
-    else if (wrongPercentage <= 20) {
+    else if (correctPercentage >= 80) {
         printf("등급: A\n");
-        strncpy(result.grade, "A", MAX_GRADE_LENGTH);
-        result.grade[MAX_GRADE_LENGTH] = '\0';
+        result.grade = 'A';
     }
-    else if (wrongPercentage <= 40) {
+    else if (correctPercentage >= 60) {
         printf("등급: B\n");
-        strncpy(result.grade, "B", MAX_GRADE_LENGTH);
-        result.grade[MAX_GRADE_LENGTH] = '\0';
+        result.grade = 'B';
     }
-    else if (wrongPercentage <= 60) {
+    else if (correctPercentage >= 40) {
         printf("등급: C\n");
-        strncpy(result.grade, "C", MAX_GRADE_LENGTH);
-        result.grade[MAX_GRADE_LENGTH] = '\0';
+        result.grade = 'C';
     }
-    else if (wrongPercentage <= 80) {
+    else if (correctPercentage >= 20) {
         printf("등급: D\n");
-        strncpy(result.grade, "D", MAX_GRADE_LENGTH);
-        result.grade[MAX_GRADE_LENGTH] = '\0';
+        result.grade = 'D';
     }
     else {
         printf("등급: E\n");
-        strncpy(result.grade, "E", MAX_GRADE_LENGTH);
-        result.grade[MAX_GRADE_LENGTH] = '\0';
+        result.grade = 'E';
     }
 
     int x = 10;
@@ -2103,20 +2030,49 @@ int printResult(struct Result result, struct Member loginUser, int selectedSecti
     printf("오답 수: %d\n", result.wrongCount);
     gotoxy(x - 2, y);
 
-    switch (selectedSection) {
-    case SISA: {
-        strcpy(loginUser.quizOptions[SISA].grade, result.grade);
-        loginUser.quizOptions[SISA].correctCount = result.correctCount;
-        loginUser.quizOptions[SISA].wrongCount = result.wrongCount;
-        break;
+    FILE* file = fopen("lank.txt", "a+");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        exit(1);
     }
-    case INMUL: {
-        strcpy(loginUser.quizOptions[INMUL].grade, result.grade);
-        loginUser.quizOptions[INMUL].correctCount = result.correctCount;
-        loginUser.quizOptions[INMUL].wrongCount = result.wrongCount;
-        break;
+
+    struct Member members[MAX_MEMBERS];
+    int numMembers = 0;
+    int foundUser = 0;
+
+    while (fscanf(file, "%s %f %d %d", members[numMembers].username, &members[numMembers].result.percentage, &members[numMembers].result.correctCount, &members[numMembers].result.wrongCount) != EOF) {
+        numMembers++;
     }
+
+    for (int i = 0; i < numMembers; i++) {
+        if (strcmp(members[i].username, loginUser.username) == 0) {
+            foundUser = 1;
+            if (correctPercentage > members[i].result.percentage || (correctPercentage == members[i].result.percentage && result.correctCount > members[i].result.correctCount)) {
+                members[i].result.percentage = correctPercentage;
+                members[i].result.correctCount = result.correctCount;
+                members[i].result.wrongCount = result.wrongCount;
+            }
+            break;
+        }
     }
+    
+    if (!foundUser) {
+        strcpy(members[numMembers].username, loginUser.username);
+        members[numMembers].result.percentage = correctPercentage;
+        members[numMembers].result.correctCount = result.correctCount;
+        members[numMembers].result.wrongCount = result.wrongCount;
+        numMembers++;
+    }
+
+    qsort(members, numMembers, sizeof(struct Member), compare);
+    fclose(file);
+
+    file = fopen("lank.txt", "w");
+    for (int i = 0; i < numMembers; i++) {
+        fprintf(file, "%s %.2f %d %d\n", members[i].username, members[i].result.percentage, members[i].result.correctCount, members[i].result.wrongCount);
+    }
+
+    fclose(file);
 
     setcolor(3, 0);
     printf("> ");
@@ -2153,6 +2109,102 @@ int printResult(struct Result result, struct Member loginUser, int selectedSecti
         }
         case SUBMIT: {
             return x - 7;
+        }
+        }
+    }
+}
+int mainDraw(struct Member loginUser, struct Member* members) {
+    int x = 30;
+    int y = 35;
+    int i = 1;
+    cls;
+    printf("\n\n\n");
+    printf("                                                                                         ComeOn Sense Quiz\n");
+
+    loadUserInfo(loginUser);
+
+    gotoxy(90, 10);
+    printf("오답 노트");
+
+    gotoxy(150, 10);
+    printf("리더 보드(ID 점수 정답개수 오답개수)");
+    gotoxy(150, 11);
+    FILE* file = fopen("lank.txt", "r");
+    char line[100];
+    while (fgets(line, sizeof(line), file)) {
+        line[strcspn(line, "\n")] = 0;
+
+        char str[20];
+        float val1;
+        int num1, num2;
+
+        sscanf(line, "%s %f %d %d", str, &val1, &num1, &num2);
+
+        gotoxy(150, 11+i);
+        printf("%s %.2f %d %d", str, val1, num1, num2);
+        i++;
+    }
+
+    fclose(file);
+
+    gotoxy(x - 2, y);
+    setcolor(3, 0);
+    printf("> ");
+    gotoxy(x, y);
+    setcolor(7, 0);
+    printf("시사");
+    gotoxy(x + 25, y);
+    printf("국가");
+    gotoxy(x + 50, y);
+    printf("인물");
+    gotoxy(x + 75, y);
+    printf("과학");
+    gotoxy(x + 100, y);
+    printf("역사");
+    gotoxy(x + 125, y);
+    printf("영어");
+
+    gotoxy(10, 45);
+    printf("종료(e)");
+
+    gotoxy(170, 45);
+    printf("로그인 화면으로(r)");
+
+    while (1) {
+        int n = keyControl();
+        switch (n) {
+        case RIGHT: {
+            if (x > 28 && x < 155) {
+                gotoxy(x - 2, y);
+                printf(" ");
+                x = x + 25;
+                gotoxy(x - 2, y);
+                setcolor(3, 0);
+                printf(">");
+                setcolor(7, 0);
+            }
+            break;
+        }
+        case LEFT: {
+            if (x < 157 && x > 30) {
+                gotoxy(x - 2, y);
+                printf(" ");
+                x = x - 25;
+                gotoxy(x - 2, y);
+                setcolor(3, 0);
+                printf(">");
+                setcolor(7, 0);
+            }
+            break;
+        }
+        case EXIT: {
+            return 1;
+        }
+        case RETURN: {
+            return 2;
+        }
+        case SUBMIT: {
+            return x - 30;
         }
         }
     }
