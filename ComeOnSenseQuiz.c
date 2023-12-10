@@ -60,6 +60,7 @@ int isAlreadyRecorded(char* filename, char question[MAX_QUESTION_LENGTH]); //오
 int CorrectAnswers(); //정답
 int WrongAnswers(int currentQuestionIndex, char answers[][MAX_ANSWER_LENGTH], char ian[][MAX_EXPLANATION_LENGTH]); //오답
 int printResult(struct Result result, struct Member loginUser); //결과 출력
+void displayWrongAnswers(struct Member loginUser); //오답노트 화면
 
 /* 구조체 선언 */
 typedef struct Result {
@@ -107,6 +108,11 @@ int main() {
                     }
                     if (n == 2)
                         break;
+                    if (n == 3) {
+                        cls;
+                        displayWrongAnswers(loginUser);
+                    }
+
                     char fileCategory[2];
                     char fileDifficulty[6];
                     char filename[100];
@@ -2350,6 +2356,35 @@ int printResult(struct Result result, struct Member loginUser) {
         }
     }
 }
+void displayWrongAnswers(struct Member loginUser) {
+    char wrongAnswersFilename[MAX_FILE_NAME_LENGTH];
+    sprintf(wrongAnswersFilename, "%s_wrong_answers.txt", loginUser.username);
+    FILE* wrongAnswersFile = fopen(wrongAnswersFilename, "r");
+
+    gotoxy(165, 5);
+    printf("메인화면(r) ->");
+    gotoxy(0, 0);
+
+    if (wrongAnswersFile == NULL) {
+        printf("오답 노트 파일을 열 수 없습니다.\n");
+        return;
+    }
+
+    char line[MAX_QUESTION_LENGTH];
+
+    printf("\n오답 노트:\n");
+    while (fgets(line, sizeof(line), wrongAnswersFile) != NULL) {
+        printf("%s", line);
+    }
+
+    fclose(wrongAnswersFile);
+    int n = keyControl();
+    switch (n) {
+    case RETURN: {
+        return;
+    }
+    }
+}
 int mainDraw(struct Member loginUser, struct Member* members) {
     int x = 30;
     int y = 35;
@@ -2361,7 +2396,7 @@ int mainDraw(struct Member loginUser, struct Member* members) {
     loadUserInfo(loginUser);
 
     gotoxy(90, 10);
-    printf("오답 노트");
+    printf("오답 노트(w)");
 
     gotoxy(150, 10);
     printf("리더 보드(ID 점수 정답개수 오답개수)");
@@ -2439,6 +2474,9 @@ int mainDraw(struct Member loginUser, struct Member* members) {
         }
         case RETURN: {
             return 2;
+        }
+        case UP: {
+            return 3;
         }
         case SUBMIT: {
             return x - 30;
