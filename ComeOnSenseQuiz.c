@@ -161,6 +161,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 3) {
@@ -199,6 +203,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 6) {
@@ -236,6 +244,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 10)
@@ -284,6 +296,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 3) {
@@ -322,6 +338,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 6) {
@@ -359,6 +379,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 10)
@@ -407,6 +431,10 @@ int main() {
                        
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 3) {
@@ -445,6 +473,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 6) {
@@ -481,6 +513,11 @@ int main() {
                             FILE* file = fopen(filename, "w");
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
+                            fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 10)
@@ -529,6 +566,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 3) {
@@ -567,6 +608,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 6) {
@@ -604,6 +649,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 10)
@@ -652,6 +701,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 3) {
@@ -690,6 +743,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 6) {
@@ -727,6 +784,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 10)
@@ -775,6 +836,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 3) {
@@ -813,6 +878,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 6) {
@@ -850,6 +919,10 @@ int main() {
 
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
+                            if (r == 3) {
+                                cls;
+                                displayWrongAnswers(loginUser);
+                            }
                             cls;
                         }
                         else if (i == 10)
