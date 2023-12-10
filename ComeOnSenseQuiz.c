@@ -45,15 +45,16 @@ int isUsernameExists(const char* username); //사용자가 존재하는 지 판�
 void loadUserInfo(struct Member loginUser); //사용자 정보
 int mainDraw(struct Member loginUser); //메인 화면
 int level(); //난이도 선택
-void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], int* numQuestions); //문제를 파일에서 불러옴
+void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char* hintFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], char hints[][MAX_HINT_LENGTH], int* numQuestions); //문제를 파일에서 불러옴
 void readNumbers(char* filename, char numbers[][MAX_QUESTION_LENGTH], int* numNumbers); //객관식 문제 읽어옴
 void printNumbers(char numbers[][MAX_QUESTION_LENGTH], int start, int end); //객관식 문제 출력
 void readExplanations(char* filename, char explanations[][MAX_EXPLANATION_LENGTH], int* numExplanations); //설명을 읽어옴
 bool checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]); //정답인지 확인
 void saveWrongAnswer(char* filename, char question[MAX_QUESTION_LENGTH], char correctAnswer[MAX_ANSWER_LENGTH], char userAnswer[MAX_ANSWER_LENGTH]); //오답노트 저장
 void displayHint(char hints[][MAX_HINT_LENGTH], int currentQuestionIndex); //힌트
-struct Result questions(struct Member loginUser, const char* fileName, const char* fileName2, const char* fileName3, const char* fileName5, const char* username); //OX문제, 주관식 문제
+struct Result questions(struct Member loginUser, const char* fileName, const char* fileName2, const char* fileName3, const char* fileName5, const char* username); //OX문제
 struct Result questions2(struct Member loginUser, const char* fileName, const char* fileName2, const char* fileName3, const char* fileName4, const char* fileName5, const char* username); //주관식 문제
+struct Result questions3(struct Member loginUser, const char* fileName, const char* fileName2, const char* fileName3, const char* fileName5, const char* username); //주관식 문제
 char* generateWrongAnswersFilename(const char* username); //오답노트 파일 이름 생성
 int isAlreadyRecorded(char* filename, char question[MAX_QUESTION_LENGTH]); //오답노트에 이미 존재하는 문제인가?
 int CorrectAnswers(); //정답
@@ -98,8 +99,12 @@ int main() {
                 if (strcmp(loginUser.username, "") != 0) {
                     data = loginUser;
                     int n = mainDraw(data, &data);
-                    if (n == 1)
-                        return 0;
+                    if (n == 1) {
+                        cls;
+                        gotoxy(85, 25);
+                        printf("프로그램 종료");
+                        exit(0);
+                    }
                     if (n == 2)
                         break;
                     char fileCategory[2];
@@ -198,7 +203,7 @@ int main() {
                             strcpy(fileDifficulty, "hard");
                             sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
-                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            struct Result result = questions3(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
                                 gotoxy(80, 25);
                                 printf("Error executing questions function.\n");
@@ -227,6 +232,8 @@ int main() {
                             fclose(file);
                             cls;
                         }
+                        else if (i == 10)
+                            continue;
                     }
                     else if (n == 25) {
                         //국가
@@ -319,7 +326,7 @@ int main() {
                             strcpy(fileDifficulty, "hard");
                             sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
-                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            struct Result result = questions3(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
                                 gotoxy(80, 25);
                                 printf("Error executing questions function.\n");
@@ -348,6 +355,8 @@ int main() {
                             fclose(file);
                             cls;
                         }
+                        else if (i == 10)
+                            continue;
                     }
                     else if (n == 50) {
                         //인물
@@ -440,7 +449,7 @@ int main() {
                             strcpy(fileDifficulty, "hard");
                             sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
-                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            struct Result result = questions3(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
                                 gotoxy(80, 25);
                                 printf("Error executing questions function.\n");
@@ -468,6 +477,8 @@ int main() {
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             cls;
                         }
+                        else if (i == 10)
+                            continue;
                     }
                     else if (n == 75) {
                         //과학
@@ -560,7 +571,7 @@ int main() {
                             strcpy(fileDifficulty, "hard");
                             sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
-                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            struct Result result = questions3(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
                                 gotoxy(80, 25);
                                 printf("Error executing questions function.\n");
@@ -589,6 +600,8 @@ int main() {
                             fclose(file);
                             cls;
                         }
+                        else if (i == 10)
+                            continue;
                     }
                     else if (n == 100) {
                         //역사
@@ -681,7 +694,7 @@ int main() {
                             strcpy(fileDifficulty, "hard");
                             sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
-                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            struct Result result = questions3(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
                                 gotoxy(80, 25);
                                 printf("Error executing questions function.\n");
@@ -710,6 +723,8 @@ int main() {
                             fclose(file);
                             cls;
                         }
+                        else if (i == 10)
+                            continue;
                     }
                     else if (n == 125) {
                         //영어
@@ -802,7 +817,7 @@ int main() {
                             strcpy(fileDifficulty, "hard");
                             sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
 
-                            struct Result result = questions(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
+                            struct Result result = questions3(loginUser, fileName, fileName2, fileName3, fileName5, data.username);
                             if (result.isError) {
                                 gotoxy(80, 25);
                                 printf("Error executing questions function.\n");
@@ -831,6 +846,8 @@ int main() {
                             fclose(file);
                             cls;
                         }
+                        else if (i == 10)
+                            continue;
                     }
                 }
                 else {
@@ -847,6 +864,9 @@ int main() {
         }
         else if (menuCode == 2) {
             //종료
+            cls;
+            gotoxy(85, 25);
+            printf("프로그램 종료");
             return 0;
         }
         cls;
@@ -1319,6 +1339,11 @@ int level() {
     printf("Normal");
     gotoxy(x, y + 6);
     printf("Hard");
+    gotoxy(80, 35);
+    printf("** 문제는 총 10문제 입니다. **");
+    gotoxy(80, 36);
+    printf("메인화면으로 이동(r)");
+
     while (1) {
         int n = keyControl();
         switch (n) {
@@ -1345,6 +1370,9 @@ int level() {
                 setcolor(7, 0);
             }
             break;
+        }
+        case RETURN: {
+            return 10;
         }
         case SUBMIT: {
             return y - 20;
@@ -1376,9 +1404,11 @@ struct Result questions(struct Member loginUser, const char* fileName, const cha
     char ian[MAX_QUESTIONS][MAX_EXPLANATION_LENGTH];
     int numQuestions = 0;
     int numExplanations = 0;
+    int hintcount = 5;
+    int problemnumber = 1;
 
     while (1) {
-        readQuestionAndAnswer(questionFilename, answerFilename, questions, answers, &numQuestions);
+        readQuestionAndAnswer(questionFilename, answerFilename, hintFilename, questions, answers, hints, &numQuestions);
         readExplanations(ianFilename, ian, &numExplanations);
 
         if (numQuestions == 0 || numExplanations == 0) {
@@ -1392,7 +1422,7 @@ struct Result questions(struct Member loginUser, const char* fileName, const cha
 
         char userAnswer[MAX_ANSWER_LENGTH];
         char exitInput[MAX_ANSWER_LENGTH] = "q";
-        char HintInput[MAX_ANSWER_LENGTH] = "h";
+        char hintInput[MAX_ANSWER_LENGTH] = "h";
 
         int* questionOrder = (int*)malloc(numQuestions * sizeof(int));
         if (questionOrder == NULL) {
@@ -1423,23 +1453,43 @@ struct Result questions(struct Member loginUser, const char* fileName, const cha
 
             int currentQuestionIndex = questionOrder[i];
 
-            gotoxy(175, 5);
-            printf("Hint (h)");
+            gotoxy(165, 5);
+            printf("Hint (h) 남은 힌트 수 : %d", hintcount);
 
             gotoxy(50, 15);
             printf("문제: %s\n", questions[currentQuestionIndex]);
+            gotoxy(85, 10);
+            printf("문제 번호 : %d", problemnumber);
+            problemnumber++;
 
             while (1) {
                 gotoxy(80, 35);
-                printf("답 (종료하려면 'q' 입력): ");
+                printf("답(종료 'q', 힌트 'h'): ");
+
                 scanf("%s", userAnswer);
 
                 if (strcmp(userAnswer, exitInput) == 0) {
                     gotoxy(80, 36);
-                    printf("프로그램을 종료합니다.\n");
+                    printf("문제 종료\n");
                     Sleep(1000);
                     cls;
                     return result;
+                }
+                else if (strcmp(userAnswer, hintInput) == 0) {
+                    if (hintcount > 0) {
+                        displayHint(hints, currentQuestionIndex);
+                        hintcount--;
+                        gotoxy(165, 5);
+                        printf("Hint (h) 남은 힌트 수 : %d", hintcount);
+                        gotoxy(80, 35);
+                    }
+                    else {
+                        gotoxy(80, 37);
+                        printf("남은 힌트 수가 없습니다.");
+                        Sleep(1000);
+                        gotoxy(80, 37);
+                        printf("                        ");
+                    }
                 }
                 else {
                     if (checkAnswer(currentQuestionIndex, userAnswer, answers)) {
@@ -1518,9 +1568,11 @@ struct Result questions2(struct Member loginUser, const char* fileName, const ch
     int numQuestions = 0;
     int numNumbers = 0;
     int numExplanations = 0;
+    int hintcount = 3;
+    int problemnumber = 1;
 
     while (1) {
-        readQuestionAndAnswer(questionFilename, answerFilename, questions, answers, &numQuestions);
+        readQuestionAndAnswer(questionFilename, answerFilename, hintFilename, questions, answers, hints, &numQuestions);
         readNumbers(numberFilename, numbers, &numNumbers);
         readExplanations(ianFilename, ian, &numExplanations);
 
@@ -1535,7 +1587,7 @@ struct Result questions2(struct Member loginUser, const char* fileName, const ch
 
         char userAnswer[MAX_ANSWER_LENGTH];
         char exitInput[MAX_ANSWER_LENGTH] = "q";
-        char HintInput[MAX_ANSWER_LENGTH] = "h";
+        char hintInput[MAX_ANSWER_LENGTH] = "h";
 
         int* questionOrder = (int*)malloc(numQuestions * sizeof(int));
         if (questionOrder == NULL) {
@@ -1570,11 +1622,14 @@ struct Result questions2(struct Member loginUser, const char* fileName, const ch
 
             int currentQuestionIndex = questionOrder[i];
 
-            gotoxy(175, 5);
-            printf("Hint (h 입력)");
+            gotoxy(165, 5);
+            printf("Hint (h) 남은 힌트 수 : %d", hintcount);
 
             gotoxy(50, 15);
             printf("문제: %s\n", questions[currentQuestionIndex]);
+            gotoxy(85, 10);
+            printf("문제 번호 : %d", problemnumber);
+            problemnumber++;
 
             int start = 0;
             int end = 0;
@@ -1628,7 +1683,8 @@ struct Result questions2(struct Member loginUser, const char* fileName, const ch
 
             while (1) {
                 gotoxy(80, 35);
-                printf("답 (종료하려면 'q' 입력): ");
+                printf("답(종료 'q', 힌트 'h'): ");
+
                 scanf("%s", userAnswer);
 
                 if (strcmp(userAnswer, exitInput) == 0) {
@@ -1637,6 +1693,22 @@ struct Result questions2(struct Member loginUser, const char* fileName, const ch
                     Sleep(1000);
                     cls;
                     return result;
+                }
+                else if (strcmp(userAnswer, hintInput) == 0) {
+                    if (hintcount > 0) {
+                        displayHint(hints, currentQuestionIndex);
+                        hintcount--;
+                        gotoxy(165, 5);
+                        printf("Hint (h) 남은 힌트 수 : %d", hintcount);
+                        gotoxy(80, 35);
+                    }
+                    else {
+                        gotoxy(80, 37);
+                        printf("남은 힌트 수가 없습니다.");
+                        Sleep(1000);
+                        gotoxy(80, 37);
+                        printf("                        ");
+                    }
                 }
                 else {
                     if (checkAnswer(currentQuestionIndex, userAnswer, answers)) {
@@ -1687,26 +1759,190 @@ struct Result questions2(struct Member loginUser, const char* fileName, const ch
     free(wrongAnswersFilename);
     return result;
 }
-void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], int* numQuestions) {
+struct Result questions3(struct Member loginUser, const char* fileName, const char* fileName2, const char* fileName3, const char* fileName5, const char* username) {
+    cls;
+    struct Result result = { 0 };
+    char questionFilename[MAX_FILE_NAME_LENGTH];
+    char answerFilename[MAX_FILE_NAME_LENGTH];
+    char hintFilename[MAX_FILE_NAME_LENGTH];
+    char ianFilename[MAX_FILE_NAME_LENGTH];
+    strcpy(questionFilename, fileName);
+    strcpy(answerFilename, fileName2);
+    strcpy(hintFilename, fileName3);
+    strcpy(ianFilename, fileName5);
+    struct Member loggedInUser;
+    loggedInUser = loginUser;
+    char* wrongAnswersFilename = generateWrongAnswersFilename(loggedInUser.username);
+
+    char formattedWrongAnswersFilename[MAX_FILE_NAME_LENGTH];
+    snprintf(formattedWrongAnswersFilename, MAX_FILE_NAME_LENGTH, "%s_wrong_answers.txt", username);
+
+    char questions[MAX_QUESTIONS][MAX_QUESTION_LENGTH];
+    char answers[MAX_QUESTIONS][MAX_ANSWER_LENGTH];
+    char hints[MAX_QUESTIONS][MAX_HINT_LENGTH];
+    char ian[MAX_QUESTIONS][MAX_EXPLANATION_LENGTH];
+    int numQuestions = 0;
+    int numExplanations = 0;
+    int hintcount = 1;
+    int problemnumber = 1;
+
+    while (1) {
+        readQuestionAndAnswer(questionFilename, answerFilename, hintFilename, questions, answers, hints, &numQuestions);
+        readExplanations(ianFilename, ian, &numExplanations);
+
+        if (numQuestions == 0 || numExplanations == 0) {
+            gotoxy(80, 25);
+            printf("문제 파일 또는 정답 파일을 읽을 수 없습니다.\n");
+            result.isError = 1;
+            return result;
+        }
+
+        srand(time(NULL));
+
+        char userAnswer[MAX_ANSWER_LENGTH];
+        char exitInput[MAX_ANSWER_LENGTH] = "q";
+        char hintInput[MAX_ANSWER_LENGTH] = "h";
+
+        int* questionOrder = (int*)malloc(numQuestions * sizeof(int));
+        if (questionOrder == NULL) {
+            gotoxy(80, 25);
+            printf("메모리 할당 오류\n");
+            result.isError = 1;
+            return result;
+        }
+
+        for (int i = 0; i < numQuestions; i++) {
+            questionOrder[i] = i;
+        }
+
+        FILE* wrongAnswersFile = fopen(wrongAnswersFilename, "a");
+        if (wrongAnswersFile == NULL) {
+            gotoxy(80, 25);
+            printf("오답 노트 파일을 열 수 없습니다.\n");
+            result.isError = 1;
+            return result;
+        }
+
+        for (int i = 0; i < numQuestions; i++) {
+            int randomIndex = i + rand() % (numQuestions - i);
+
+            int temp = questionOrder[i];
+            questionOrder[i] = questionOrder[randomIndex];
+            questionOrder[randomIndex] = temp;
+
+            int currentQuestionIndex = questionOrder[i];
+
+            gotoxy(165, 5);
+            printf("Hint (h) 남은 힌트 수 : %d", hintcount);
+
+            gotoxy(50, 15);
+            printf("문제: %s\n", questions[currentQuestionIndex]);
+            gotoxy(85, 10);
+            printf("문제 번호 : %d", problemnumber);
+            problemnumber++;
+
+            while (1) {
+                gotoxy(80, 35);
+                printf("답(종료 'q', 힌트 'h'): ");
+
+                scanf("%s", userAnswer);
+
+                if (strcmp(userAnswer, exitInput) == 0) {
+                    gotoxy(80, 36);
+                    printf("문제 종료\n");
+                    Sleep(1000);
+                    cls;
+                    return result;
+                }
+                else if (strcmp(userAnswer, hintInput) == 0) {
+                    if (hintcount > 0) {
+                        displayHint(hints, currentQuestionIndex);
+                        hintcount--;
+                        gotoxy(165, 5);
+                        printf("Hint (h) 남은 힌트 수 : %d", hintcount);
+                        gotoxy(80, 35);
+                    }
+                    else {
+                        gotoxy(80, 37);
+                        printf("남은 힌트 수가 없습니다.");
+                        Sleep(1000);
+                        gotoxy(80, 37);
+                        printf("                        ");
+                    }
+                }
+                else {
+                    if (checkAnswer(currentQuestionIndex, userAnswer, answers)) {
+                        int a = CorrectAnswers();
+                        result.correctCount++;
+                        if (a == 3) {
+                            cls;
+                            return result;
+                        }
+                        Sleep(1000);
+                        cls;
+                        break;
+                    }
+                    else {
+                        if (!isAlreadyRecorded(wrongAnswersFilename, questions[currentQuestionIndex])) {
+                            int a = WrongAnswers(currentQuestionIndex, answers, ian);
+                            result.wrongCount++;
+                            if (a == 3) {
+                                cls;
+                                return result;
+                            }
+                            saveWrongAnswer(wrongAnswersFilename, questions[currentQuestionIndex], answers[currentQuestionIndex], userAnswer, ian[currentQuestionIndex]);
+                            Sleep(1000);
+                            cls;
+                        }
+                        else {
+                            int a = WrongAnswers(currentQuestionIndex, answers, ian);
+                            result.wrongCount++;
+                            if (a == 3) {
+                                cls;
+                                return result;
+                            }
+                            Sleep(1000);
+                            cls;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            while (getchar() != '\n');
+        }
+        fclose(wrongAnswersFile);
+        free(questionOrder);
+        break;
+    }
+
+    free(wrongAnswersFilename);
+    return result;
+}
+void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char* hintFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], char hints[][MAX_HINT_LENGTH], int* numQuestions) {
     FILE* questionFile = fopen(questionFilename, "r");
     FILE* answerFile = fopen(answerFilename, "r");
+    FILE* hintFile = fopen(hintFilename, "r");
 
-    if (questionFile == NULL || answerFile == NULL) {
+    if (questionFile == NULL || answerFile == NULL || hintFile == NULL) {
         *numQuestions = 0;
         return;
     }
 
     *numQuestions = 0;
     while (fgets(questions[*numQuestions], MAX_QUESTION_LENGTH, questionFile) != NULL &&
-        fgets(answers[*numQuestions], MAX_ANSWER_LENGTH, answerFile) != NULL) {
+        fgets(answers[*numQuestions], MAX_ANSWER_LENGTH, answerFile) != NULL &&
+        fgets(hints[*numQuestions], MAX_HINT_LENGTH, hintFile) != NULL) {
         questions[*numQuestions][strcspn(questions[*numQuestions], "\n")] = 0;
         answers[*numQuestions][strcspn(answers[*numQuestions], "\n")] = 0;
+        hints[*numQuestions][strcspn(hints[*numQuestions], "\n")] = 0;
 
         (*numQuestions)++;
     }
 
     fclose(questionFile);
     fclose(answerFile);
+    fclose(hintFile);
 }
 void readNumbers(char* filename, char numbers[][MAX_QUESTION_LENGTH], int* numNumbers) {
     FILE* file = fopen(filename, "r");
@@ -1792,6 +2028,7 @@ int isAlreadyRecorded(char* filename, char question[MAX_QUESTION_LENGTH]) {
     return 0;
 }
 void displayHint(char hints[][MAX_HINT_LENGTH], int currentQuestionIndex) {
+    gotoxy(50, 37);
     printf("힌트: %s\n", hints[currentQuestionIndex]);
 }
 int CorrectAnswers() {
@@ -2209,159 +2446,6 @@ int mainDraw(struct Member loginUser, struct Member* members) {
         }
     }
 }
-
-/* 힌트(h키) 기능 추가 후 전체 코드
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-
-#define MAX_QUESTION_LENGTH 256
-#define MAX_ANSWER_LENGTH 64
-#define MAX_HINT_LENGTH 256
-#define MAX_QUESTIONS 100
-
-void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char* hintFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], char hints[][MAX_HINT_LENGTH], int* numQuestions);
-int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]);
-void saveWrongAnswer(char* filename, char question[MAX_QUESTION_LENGTH], char correctAnswer[MAX_ANSWER_LENGTH], char userAnswer[MAX_ANSWER_LENGTH]);
-void displayHint(char hints[][MAX_HINT_LENGTH], int currentQuestionIndex);
-
-int main() {
-    char questionFilename[] = "question.txt";
-    char answerFilename[] = "answer.txt";
-    char hintFilename[] = "hint.txt";
-    char wrongAnswersFilename[] = "wrong_answers.txt";
-
-    char questions[MAX_QUESTIONS][MAX_QUESTION_LENGTH];
-    char answers[MAX_QUESTIONS][MAX_ANSWER_LENGTH];
-    char hints[MAX_QUESTIONS][MAX_HINT_LENGTH];
-    int numQuestions = 0;
-
-    readQuestionAndAnswer(questionFilename, answerFilename, hintFilename, questions, answers, hints, &numQuestions);
-
-    if (numQuestions == 0) {
-        printf("문제 파일, 정답 파일 또는 힌트 파일을 읽을 수 없습니다.\n");
-        return 1;
-    }
-
-    srand(time(NULL));
-
-    char userAnswer[MAX_ANSWER_LENGTH];
-    char exitInput[MAX_ANSWER_LENGTH] = "q";
-    char hintInput[MAX_ANSWER_LENGTH] = "h";
-
-    int* questionOrder = (int*)malloc(numQuestions * sizeof(int));
-    if (questionOrder == NULL) {
-        printf("메모리 할당 오류\n");
-        return 1;
-    }
-
-    for (int i = 0; i < numQuestions; i++) {
-        questionOrder[i] = i;
-    }
-
-    FILE* wrongAnswersFile = fopen(wrongAnswersFilename, "a");
-    if (wrongAnswersFile == NULL) {
-        printf("오답 노트 파일을 열 수 없습니다.\n");
-        return 1;
-    }
-
-    for (int i = 0; i < numQuestions; i++) {
-        int randomIndex = i + rand() % (numQuestions - i);
-        int temp = questionOrder[i];
-        questionOrder[i] = questionOrder[randomIndex];
-        questionOrder[randomIndex] = temp;
-
-        int currentQuestionIndex = questionOrder[i];
-
-        printf("문제: %s\n", questions[currentQuestionIndex]);
-
-        while (1) {
-            printf("답을 입력하세요 (종료하려면 'q' 입력, 힌트 보려면 'h' 입력): ");
-            scanf("%s", userAnswer);
-
-            if (strcmp(userAnswer, exitInput) == 0) {
-                printf("프로그램을 종료합니다.\n");
-                break;
-            }
-            else if (strcmp(userAnswer, hintInput) == 0) {
-                displayHint(hints, currentQuestionIndex);
-            }
-            else {
-                if (checkAnsw6er(currentQuestionIndex, userAnswer, answers)) {
-                    printf("정답!\n");
-                    break;
-                }
-                else {
-                    printf("오답! 정답은 %s 입니다.\n", answers[currentQuestionIndex]);
-                    saveWrongAnswer(wrongAnswersFilename, questions[currentQuestionIndex], answers[currentQuestionIndex], userAnswer);
-                    break;
-                }
-            }
-        }
-
-        while (getchar() != '\n');
-    }
-
-    fclose(wrongAnswersFile);
-    free(questionOrder);
-
-    return 0;
-}
-
-void readQuestionAndAnswer(char* questionFilename, char* answerFilename, char* hintFilename, char questions[][MAX_QUESTION_LENGTH], char answers[][MAX_ANSWER_LENGTH], char hints[][MAX_HINT_LENGTH], int* numQuestions) {
-    FILE* questionFile = fopen(questionFilename, "r");
-    FILE* answerFile = fopen(answerFilename, "r");
-    FILE* hintFile = fopen(hintFilename, "r");
-
-    if (questionFile == NULL || answerFile == NULL || hintFile == NULL) {
-        *numQuestions = 0;
-        return;
-    }
-
-    *numQuestions = 0;
-    while (fgets(questions[*numQuestions], MAX_QUESTION_LENGTH, questionFile) != NULL &&
-        fgets(answers[*numQuestions], MAX_ANSWER_LENGTH, answerFile) != NULL &&
-        fgets(hints[*numQuestions], MAX_HINT_LENGTH, hintFile) != NULL) {
-        questions[*numQuestions][strcspn(questions[*numQuestions], "\n")] = 0;
-        answers[*numQuestions][strcspn(answers[*numQuestions], "\n")] = 0;
-        hints[*numQuestions][strcspn(hints[*numQuestions], "\n")] = 0;
-
-        (*numQuestions)++;
-    }
-
-    fclose(questionFile);
-    fclose(answerFile);
-    fclose(hintFile);
-}
-
-int checkAnswer(int questionIndex, char userAnswer[MAX_ANSWER_LENGTH], char answers[][MAX_ANSWER_LENGTH]) {
-    return strcmp(userAnswer, answers[questionIndex]) == 0;
-}
-
-void saveWrongAnswer(char* filename, char question[MAX_QUESTION_LENGTH], char correctAnswer[MAX_ANSWER_LENGTH], char userAnswer[MAX_ANSWER_LENGTH]) {
-    FILE* file = fopen(filename, "a");
-
-    if (file != NULL) {
-        fprintf(file, "문제: %s\n", question);
-        fprintf(file, "정답: %s\n", correctAnswer);
-        fprintf(file, "오답: %s\n", userAnswer);
-        fprintf(file, "------------------------\n");
-
-        fclose(file);
-    }
-    else {
-        printf("오답 노트 파일에 기록할 수 없습니다.\n");
-    }
-}
-
-void displayHint(char hints[][MAX_HINT_LENGTH], int currentQuestionIndex) {
-    printf("힌트: %s\n", hints[currentQuestionIndex]);
-}
-
-*/
 
 /* 1을 입력하면 문제 출력, 2를 입력하면 오답노트 출력
 #define _CRT_SECURE_NO_WARNINGS
