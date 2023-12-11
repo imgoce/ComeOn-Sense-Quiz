@@ -428,7 +428,7 @@ int main() {
                                 grade2 = 'E';
 
                             FILE* file = fopen(filename, "w");
-                       
+
                             fprintf(file, "%s(%s) : %c(정답 : %d, 오답 : %d)", fileCategory, fileDifficulty, grade2, result.correctCount, result.wrongCount);
                             fclose(file);
                             if (r == 3) {
@@ -963,21 +963,21 @@ void setcolor(int text, int back) {
 void titleDraw() {
     printf("\n\n\n\n");
     setcolor(3, 0);
-    gotoxy(50, 4);
-    printf("     ____       _____       ____              _____                               	\n");
-    gotoxy(50, 5);
-    printf("    /\\  _`\\    /\\  __`\\    /\\  _`\\           /\\  __`\\              __             	\n");
-    gotoxy(50, 6);
-    printf("    \\ \\ \\/\\_\\  \\ \\ \\/\\ \\   \\ \\,\\L\\_\\         \\ \\ \\/\\ \\    __  __  /\\_\\    ____    	\n");
-    gotoxy(50, 7);
-    printf("     \\ \\ \\/_/_  \\ \\ \\ \\ \\   \\/_\\__ \\          \\ \\ \\ \\ \\  /\\ \\/\\ \\ \\/\\ \\  /\\_ ,`\\  	\n");
-    gotoxy(50, 8);
-    printf("      \\ \\ \\L\\ \\  \\ \\ \\_\\ \\    /\\ \\L\\ \\         \\ \\ \\\\'\\\\ \\ \\ \\_\\ \\ \\ \\ \\ \\/_/  /_ 	\n");
-    gotoxy(50, 9);
-    printf("       \\ \\____/   \\ \\_____\\   \\ `\\____\\         \\ \\___\\_\\ \\ \\____/  \\ \\_\\  /\\____\\	\n");
-    gotoxy(50, 10);
-    printf("        \\/___/     \\/_____/    \\/_____/          \\/__//_/  \\/___/    \\/_/  \\/____/	\n");
-    setcolor(7, 0);
+    gotoxy(60, 14);
+    printf("   #####    #####    #####             #####   ##  ##     ##     ###### \n");
+    gotoxy(60, 15);
+    printf("  ##       ##  ##   ##                ##  ##   ##  ##                ## \n");
+    gotoxy(60, 16);
+    printf("  ##       ##  ##   ##                ##  ##   ##  ##     ##       ##  \n");
+    gotoxy(60, 17);
+    printf(" ##       ##  ##   ######            ##  ##   ##   ##    ##      ###  \n");
+    gotoxy(60, 18);
+    printf(" ##       ##  ##       ##            ## ###   ##  ##     ##      ##  \n");
+    gotoxy(60, 19);
+    printf("##       ##  ##       ##            ##  ##    ##  ##     ##     ##     \n");
+    gotoxy(60, 20);
+    printf("######   ######   ######            #######    ####      ##     ###### \n");
+    setcolor(7, 21);
 }
 void gotoxy(int x, int y) {
     HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -1016,23 +1016,23 @@ int keyControl() {
     }
 }
 int menuDraw() {
-    int x = 90;
-    int y = 35;
+    int x = 85;
+    int y = 27;
     gotoxy(x - 2, y);
     setcolor(3, 0);
     printf("> ");
     gotoxy(x, y);
     setcolor(7, 0);
-    printf("ID 입력");
+    printf("ID가 있을 경우");
     gotoxy(x, y + 1);
     printf("ID가 없을 경우");
     gotoxy(x, y + 2);
-    printf("종료");
+    printf("게임 종료");
     while (1) {
         int n = keyControl();
         switch (n) {
         case UP: {
-            if (y > 35) {
+            if (y > 27) {
                 gotoxy(x - 2, y);
                 printf(" ");
                 gotoxy(x - 2, --y);
@@ -1044,7 +1044,7 @@ int menuDraw() {
             break;
         }
         case DOWN: {
-            if (y < 37) {
+            if (y < 29) {
                 gotoxy(x - 2, y);
                 printf(" ");
                 gotoxy(x - 2, ++y);
@@ -1056,14 +1056,14 @@ int menuDraw() {
             break;
         }
         case SUBMIT: {
-            return y - 35;
+            return y - 27;
         }
         }
     }
 }
 void signup() {
-    int x = 90;
-    int y = 35;
+    int x = 85;
+    int y = 27;
     gotoxy(x, y);
     printf("                ");
     gotoxy(x, y + 1);
@@ -1104,8 +1104,8 @@ void signup() {
     }
 }
 struct Member login() {
-    int x = 90;
-    int y = 35;
+    int x = 85;
+    int y = 27;
     struct Member member;
     char inputUsername[20];
     FILE* file;
@@ -2371,7 +2371,7 @@ int printResult(struct Result result, struct Member loginUser) {
             break;
         }
     }
-    
+
     if (!foundUser) {
         strcpy(members[numMembers].username, loginUser.username);
         members[numMembers].result.percentage = correctPercentage;
@@ -2485,7 +2485,7 @@ int mainDraw(struct Member loginUser, struct Member* members) {
 
         sscanf(line, "%s %f %d %d", str, &val1, &num1, &num2);
 
-        gotoxy(150, 11+i);
+        gotoxy(150, 11 + i);
         printf("%s %.2f %d %d", str, val1, num1, num2);
         i++;
     }
