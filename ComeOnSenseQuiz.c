@@ -79,6 +79,17 @@ typedef struct Member {
 
 int main() {
     init();
+    {
+       
+        HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+
+        CONSOLE_CURSOR_INFO ConsoleCursor;
+        ConsoleCursor.bVisible = FALSE;  
+        ConsoleCursor.dwSize = 1;        
+
+        SetConsoleCursorInfo(consoleHandle, &ConsoleCursor);
+    }
     struct Member data;
     const char* fileName = NULL;
     const char* fileName2 = NULL;
