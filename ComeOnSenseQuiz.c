@@ -80,13 +80,13 @@ typedef struct Member {
 int main() {
     init();
     {
-       
+
         HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 
 
         CONSOLE_CURSOR_INFO ConsoleCursor;
-        ConsoleCursor.bVisible = FALSE;  
-        ConsoleCursor.dwSize = 1;        
+        ConsoleCursor.bVisible = FALSE;
+        ConsoleCursor.dwSize = 1;
 
         SetConsoleCursorInfo(consoleHandle, &ConsoleCursor);
     }
@@ -2124,45 +2124,49 @@ void displayHint(char hints[][MAX_HINT_LENGTH], int currentQuestionIndex) {
 int CorrectAnswers() {
     cls;
     gotoxy(80, 10);
-    puts("@@@@@,,,....,,,@@@@@");
+    puts("            ####            ");
     gotoxy(80, 11);
-    puts("@@@@............@@@@");
+    puts("          ########          ");
     gotoxy(80, 12);
-    puts("@@@..............@@@");
+    puts("       ####      ####       ");
     gotoxy(80, 13);
-    puts("@@......,,,,......@@");
+    puts("     ####          ####     ");
     gotoxy(80, 14);
-    puts("@.....@@@@@@@@.....@");
+    puts("   ###                ###   ");
     gotoxy(80, 15);
-    puts(",....@@@@@@@@@@....,");
+    puts("   ##                  ##  ");
     gotoxy(80, 16);
-    puts(",...@@@@@@@@@@@@...,");
+    puts("   ###                ###   ");
     gotoxy(80, 17);
-    puts(",...@@@@@@@@@@@@...,");
+    puts("     ####          ####     ");
     gotoxy(80, 18);
-    puts("...,@@@@@@@@@@@@,...");
+    puts("       ####      ####       ");
     gotoxy(80, 19);
-    puts("...,@@@@@@@@@@@@,...");
+    puts("         ##########         ");
     gotoxy(80, 20);
-    puts("...,@@@@@@@@@@@@,...");
+    puts("            ####            ");
     gotoxy(80, 21);
-    puts("...,@@@@@@@@@@@@,...");
+    puts("                            ");
     gotoxy(80, 22);
-    puts(",...@@@@@@@@@@@@...,");
+    puts("                            ");
     gotoxy(80, 23);
-    puts(",...@@@@@@@@@@@@...,");
+    puts("                            ");
     gotoxy(80, 24);
-    puts(",....@@@@@@@@@@....,");
+    puts("                            ");
     gotoxy(80, 25);
-    puts("@.....@@@@@@@@.....@");
+    puts("                            ");
     gotoxy(80, 26);
-    puts("@@......,,,,......@@");
+    puts("                            ");
     gotoxy(80, 27);
-    puts("@@@..............@@@");
+    puts("                            ");
     gotoxy(80, 28);
-    puts("@@@@............@@@@");
+    puts("                            ");
     gotoxy(80, 29);
-    puts("@@@@@,,,....,,,@@@@@");
+    puts("                            ");
+
+    gotoxy(87, 35);
+    printf("정답입니다!");
+
 
     int x = 10;
     int y = 45;
@@ -2209,45 +2213,45 @@ int CorrectAnswers() {
 int WrongAnswers(int currentQuestionIndex, char answers[][MAX_ANSWER_LENGTH], char ian[][MAX_EXPLANATION_LENGTH]) {
     cls;
     gotoxy(80, 10);
-    puts("@@@@@@@@@@@@@@@@@@@@");
+    puts("#####                  #####");
     gotoxy(80, 11);
-    puts("@@@@@@@@@@@@@@@@@@@@");
+    puts("#######              #######");
     gotoxy(80, 12);
-    puts("@     @@@@@@@@     @");
+    puts("  ########        ########  ");
     gotoxy(80, 13);
-    puts("@      @@@@@@      @");
+    puts("    ####################    ");
     gotoxy(80, 14);
-    puts("@       @@@@       @");
+    puts("      ################      ");
     gotoxy(80, 15);
-    puts("@@       @@       @@");
+    puts("         ##########         ");
     gotoxy(80, 16);
-    puts("@@@              @@@");
+    puts("      ################      ");
     gotoxy(80, 17);
-    puts("@@@@            @@@@");
+    puts("    ####################    ");
     gotoxy(80, 18);
-    puts("@@@@@          @@@@@");
+    puts("  ########        ########  ");
     gotoxy(80, 19);
-    puts("@@@@@@        @@@@@@");
+    puts("#######              #######");
     gotoxy(80, 20);
-    puts("@@@@@@        @@@@@@");
+    puts("#####                  #####"); 
     gotoxy(80, 21);
-    puts("@@@@@          @@@@@");
+    puts("                            ");
     gotoxy(80, 22);
-    puts("@@@@            @@@@");
+    puts("                            ");
     gotoxy(80, 23);
-    puts("@@@              @@@");
+    puts("                            ");
     gotoxy(80, 24);
-    puts("@@       @@       @@");
+    puts("                            ");
     gotoxy(80, 25);
-    puts("@       @@@@       @");
+    puts("                            ");
     gotoxy(80, 26);
-    puts("@      @@@@@@      @");
+    puts("                            ");
     gotoxy(80, 27);
-    puts("@     @@@@@@@@     @");
+    puts("                            ");
     gotoxy(80, 28);
-    puts("@    @@@@@@@@@@    @");
+    puts("                            ");
     gotoxy(80, 29);
-    puts("@@@@@@@@@@@@@@@@@@@@");
+    puts("                            ");
     gotoxy(80, 30);
 
     gotoxy(50, 35);
