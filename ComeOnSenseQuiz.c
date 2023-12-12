@@ -7,6 +7,7 @@
 #include <string.h>
 #include <time.h>
 #include <stdbool.h>
+#include <signal.h>
 
 /* define 선언 */
 #define pause system("pause > nul")
@@ -90,6 +91,9 @@ int main() {
 
         SetConsoleCursorInfo(consoleHandle, &ConsoleCursor);
     }
+
+
+
     struct Member data;
     const char* fileName = NULL;
     const char* fileName2 = NULL;
@@ -2126,21 +2130,21 @@ int CorrectAnswers() {
     gotoxy(80, 10);
     puts("            ####            ");
     gotoxy(80, 11);
-    puts("          ########          ");
+    puts("         ##########         ");
     gotoxy(80, 12);
-    puts("       ####      ####       ");
+    puts("      #####      #####      ");
     gotoxy(80, 13);
-    puts("     ####          ####     ");
+    puts("    #####          #####    ");
     gotoxy(80, 14);
-    puts("   ###                ###   ");
+    puts("  ####                ####  ");
     gotoxy(80, 15);
-    puts("   ##                  ##  ");
+    puts("  ###                  ###  ");
     gotoxy(80, 16);
-    puts("   ###                ###   ");
+    puts("  ####                ####  ");
     gotoxy(80, 17);
-    puts("     ####          ####     ");
+    puts("    #####          #####    ");
     gotoxy(80, 18);
-    puts("       ####      ####       ");
+    puts("      #####      #####      ");
     gotoxy(80, 19);
     puts("         ##########         ");
     gotoxy(80, 20);
@@ -2219,7 +2223,7 @@ int WrongAnswers(int currentQuestionIndex, char answers[][MAX_ANSWER_LENGTH], ch
     gotoxy(80, 12);
     puts("  ########        ########  ");
     gotoxy(80, 13);
-    puts("    ####################    ");
+    puts("    ########    ########    ");
     gotoxy(80, 14);
     puts("      ################      ");
     gotoxy(80, 15);
@@ -2227,7 +2231,7 @@ int WrongAnswers(int currentQuestionIndex, char answers[][MAX_ANSWER_LENGTH], ch
     gotoxy(80, 16);
     puts("      ################      ");
     gotoxy(80, 17);
-    puts("    ####################    ");
+    puts("    ########    ########    ");
     gotoxy(80, 18);
     puts("  ########        ########  ");
     gotoxy(80, 19);
