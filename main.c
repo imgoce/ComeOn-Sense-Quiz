@@ -1,6 +1,7 @@
 #include "main.h"
 #include "util.h"
 #include "function.h"
+#include "screen.h"
 
 int main() {
     init();
