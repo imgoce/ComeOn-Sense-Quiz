@@ -38,6 +38,10 @@ int main() {
                         cls;
                         displayWrongAnswers(loginUser);
                     }
+                    if (n == 4) {
+                        cls;
+                        solution();
+                    }
 
                     char fileCategory[10];
                     char fileDifficulty[30];
@@ -51,10 +55,9 @@ int main() {
                         strcpy(fileCategory, "시사");
                         Sleep(1000);
                         i = level();
-                        loginUser.difficulty = i / 3;
                         if (i == 0) {
                             fileName = "preview_easy.txt";
-                            fileName2 = "preview_easy_answers.txt";
+                            fileName2 = "preview_easy_answer.txt";
                             fileName3 = "preview_easy_hint.txt";
                             fileName5 = "preview_easy_ian.txt";
                             strcpy(fileDifficulty, "easy");
@@ -95,7 +98,7 @@ int main() {
                         }
                         else if (i == 3) {
                             fileName = "preview_normal.txt";
-                            fileName2 = "preview_normal_answers.txt";
+                            fileName2 = "preview_normal_answer.txt";
                             fileName3 = "preview_normal_hint.txt";
                             fileName4 = "preview_normal_number.txt";
                             fileName5 = "preview_normal_ian.txt";
@@ -137,7 +140,7 @@ int main() {
                         }
                         else if (i == 6) {
                             fileName = "preview_hard.txt";
-                            fileName2 = "preview_hard_answers.txt";
+                            fileName2 = "preview_hard_answer.txt";
                             fileName3 = "preview_hard_hint.txt";
                             fileName5 = "preview_hard_ian.txt";
                             strcpy(fileDifficulty, "hard");
@@ -189,7 +192,7 @@ int main() {
                         i = level();
                         if (i == 0) {
                             fileName = "country_easy.txt";
-                            fileName2 = "country_easy_answers.txt";
+                            fileName2 = "country_easy_answer.txt";
                             fileName3 = "country_easy_hint.txt";
                             fileName5 = "country_easy_ian.txt";
                             strcpy(fileDifficulty, "easy");
@@ -230,7 +233,7 @@ int main() {
                         }
                         else if (i == 3) {
                             fileName = "country_normal.txt";
-                            fileName2 = "country_normal_answers.txt";
+                            fileName2 = "country_normal_answer.txt";
                             fileName3 = "country_normal_hint.txt";
                             fileName4 = "country_normal_number.txt";
                             fileName5 = "country_normal_ian.txt";
@@ -272,7 +275,7 @@ int main() {
                         }
                         else if (i == 6) {
                             fileName = "country_hard.txt";
-                            fileName2 = "country_hard_answers.txt";
+                            fileName2 = "country_hard_answer.txt";
                             fileName3 = "country_hard_hint.txt";
                             fileName5 = "country_hard_ian.txt";
                             strcpy(fileDifficulty, "hard");
@@ -502,7 +505,7 @@ int main() {
                             fileName = "science_normal.txt";
                             fileName2 = "science_normal_answer.txt";
                             fileName3 = "science_normal_hint.txt";
-                            fileName4 = "science_normal_number";
+                            fileName4 = "science_normal_number.txt";
                             fileName5 = "science_normal_ian.txt";
                             strcpy(fileDifficulty, "normal");
                             sprintf(filename, "%s_%s_%s.txt", loginUser.username, fileCategory, fileDifficulty);
